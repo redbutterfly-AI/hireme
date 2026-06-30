@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#F5F5F5"
+    android:padding="24dp">
+
+    <TextView
+        android:text="Upload CV"
+        android:textSize="28sp"
+        android:textStyle="bold"
+        android:textColor="#1976D2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"/>
+
+    <TextView
+        android:text="Upload your CV so employers can review it when you apply for jobs."
+        android:textSize="14sp"
+        android:textColor="#888888"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="32dp"/>
+
+    <!-- Current CV Card -->
+    <LinearLayout
+        android:id="@+id/layoutCurrentCV"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@android:color/white"
+        android:padding="20dp"
+        android:layout_marginBottom="24dp"
+        android:visibility="gone">
+
+        <TextView
+            android:text="Current CV"
+            android:textSize="13sp"
+            android:textColor="#888888"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:text="PDF"
+                android:textSize="24sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="12dp"/>
+
+            <TextView
+                android:id="@+id/tvCurrentCVName"
+                android:text="cv_file.pdf"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                android:textColor="#333333"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"/>
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btnDeleteCV"
+            android:text="Delete CV"
+            android:textSize="13sp"
+            android:backgroundTint="#D32F2F"
+            android:textColor="@android:color/white"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="12dp"/>
+
+    </LinearLayout>
+
+    <!-- Upload Box -->
+    <LinearLayout
+        android:id="@+id/layoutUploadBox"
+        android:layout_width="match_parent"
+        android:layout_height="160dp"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:background="@android:color/white"
+        android:layout_marginBottom="16dp">
+
+        <TextView
+            android:text="PDF only - Max 5MB"
+            android:textSize="40sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"/>
+
+        <TextView
+            android:id="@+id/tvSelectedFile"
+            android:text="Tap to select a PDF file"
+            android:textSize="14sp"
+            android:textColor="#888888"
+            android:gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="4dp"/>
+
+        <TextView
+            android:text="PDF only � Max 5MB"
+            android:textSize="12sp"
+            android:textColor="#BBBBBB"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/btnSelectFile"
+        android:text="Select PDF File"
+        android:textSize="15sp"
+        android:backgroundTint="#1976D2"
+        android:textColor="@android:color/white"
+        android:layout_width="match_parent"
+        android:layout_height="52dp"
+        android:layout_marginBottom="12dp"/>
+
+    <Button
+        android:id="@+id/btnUploadCV"
+        android:text="Upload CV"
+        android:textSize="15sp"
+        android:backgroundTint="#388E3C"
+        android:textColor="@android:color/white"
+        android:layout_width="match_parent"
+        android:layout_height="52dp"
+        android:enabled="false"/>
+
+</LinearLayout>

@@ -1,0 +1,120 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#F0F4F8">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#0D1B2A"
+        android:padding="16dp"
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
+
+        <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content"
+            android:layout_weight="1" android:orientation="vertical">
+            <TextView android:text="Good morning," android:textSize="12sp" android:textColor="#90CAF9"
+                android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+            <TextView android:id="@+id/tvEmployerName" android:text="Employer"
+                android:textSize="17sp" android:textStyle="bold" android:textColor="@android:color/white"
+                android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+            <TextView android:text="Employer account" android:textSize="12sp" android:textColor="#64B5F6"
+                android:layout_marginTop="4dp"
+                android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+        </LinearLayout>
+
+        <ImageButton
+            android:id="@+id/btnNotifications"
+            android:layout_width="38dp"
+            android:layout_height="38dp"
+            android:src="@android:drawable/ic_popup_reminder"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:tint="@android:color/white"
+            android:contentDescription="Notifications"/>
+
+    </LinearLayout>
+
+    <ScrollView android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1">
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/btnPostJob"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Post a new job"
+                android:textColor="@android:color/white"
+                android:backgroundTint="#1565C0"
+                android:layout_margin="12dp"/>
+
+            <TextView android:text="Quick actions" android:textSize="13sp" android:textStyle="bold"
+                android:textColor="#0D1B2A" android:layout_marginStart="12dp" android:layout_marginBottom="8dp"
+                android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:orientation="horizontal" android:paddingStart="12dp" android:paddingEnd="12dp"
+                android:layout_marginBottom="16dp">
+
+                <Button
+                    android:id="@+id/btnMyJobs"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="My jobs"
+                    android:textSize="12sp"
+                    android:textColor="#1565C0"
+                    android:backgroundTint="#E3F2FD"
+                    android:layout_marginEnd="6dp"/>
+
+                <Button
+                    android:id="@+id/btnSeekers"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Seekers"
+                    android:textSize="12sp"
+                    android:textColor="#E65100"
+                    android:backgroundTint="#FFF3E0"
+                    android:layout_marginEnd="6dp"/>
+
+                <Button
+                    android:id="@+id/btnProfile"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Profile"
+                    android:textSize="12sp"
+                    android:textColor="#2E7D32"
+                    android:backgroundTint="#E8F5E9"/>
+
+            </LinearLayout>
+
+            <TextView android:text="Recent applicants" android:textSize="13sp" android:textStyle="bold"
+                android:textColor="#0D1B2A" android:layout_marginStart="12dp" android:layout_marginBottom="8dp"
+                android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerApplicants"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingStart="12dp"
+                android:paddingEnd="12dp"
+                android:nestedScrollingEnabled="false"
+                android:layout_marginBottom="12dp"/>
+
+            <Button
+                android:id="@+id/btnLogout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Log out"
+                android:textColor="#C62828"
+                android:backgroundTint="#FFEBEE"
+                android:layout_marginStart="12dp"
+                android:layout_marginEnd="12dp"
+                android:layout_marginBottom="16dp"/>
+
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

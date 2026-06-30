@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#0D1B2A">
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#CC0D1B2A"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="24dp"
+            android:gravity="center_horizontal">
+
+            <TextView
+                android:text="Join HireMe"
+                android:textSize="32sp"
+                android:textStyle="bold"
+                android:textColor="@android:color/white"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="40dp"
+                android:layout_marginBottom="8dp"/>
+
+            <TextView
+                android:text="Create your free account today"
+                android:textSize="14sp"
+                android:textColor="#90CAF9"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="32dp"/>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="8dp"
+                app:cardBackgroundColor="#FFFFFF"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:layout_marginBottom="16dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="24dp">
+
+                    <TextView
+                        android:text="USERNAME"
+                        android:textSize="11sp"
+                        android:textStyle="bold"
+                        android:textColor="#1976D2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="6dp"/>
+
+                    <EditText
+                        android:id="@+id/etName"
+                        android:layout_width="match_parent"
+                        android:layout_height="52dp"
+                        android:hint="e.g. john123 (no spaces)"
+                        android:inputType="textNoSuggestions"
+                        android:background="@drawable/input_bg"
+                        android:paddingStart="16dp"
+                        android:paddingEnd="16dp"
+                        android:textSize="15sp"
+                        android:layout_marginBottom="16dp"/>
+
+                    <TextView
+                        android:text="EMAIL ADDRESS"
+                        android:textSize="11sp"
+                        android:textStyle="bold"
+                        android:textColor="#1976D2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="6dp"/>
+
+                    <EditText
+                        android:id="@+id/etEmail"
+                        android:layout_width="match_parent"
+                        android:layout_height="52dp"
+                        android:hint="your@email.com"
+                        android:inputType="textEmailAddress"
+                        android:background="@drawable/input_bg"
+                        android:paddingStart="16dp"
+                        android:paddingEnd="16dp"
+                        android:textSize="15sp"
+                        android:layout_marginBottom="16dp"/>
+
+                    <TextView
+                        android:text="PHONE NUMBER"
+                        android:textSize="11sp"
+                        android:textStyle="bold"
+                        android:textColor="#1976D2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="6dp"/>
+
+                    <EditText
+                        android:id="@+id/etPhone"
+                        android:layout_width="match_parent"
+                        android:layout_height="52dp"
+                        android:hint="e.g. 0999000001"
+                        android:inputType="phone"
+                        android:background="@drawable/input_bg"
+                        android:paddingStart="16dp"
+                        android:paddingEnd="16dp"
+                        android:textSize="15sp"
+                        android:layout_marginBottom="16dp"/>
+
+                    <TextView
+                        android:text="PASSWORD"
+                        android:textSize="11sp"
+                        android:textStyle="bold"
+                        android:textColor="#1976D2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="6dp"/>
+
+                    <EditText
+                        android:id="@+id/etPassword"
+                        android:layout_width="match_parent"
+                        android:layout_height="52dp"
+                        android:hint="At least 6 characters"
+                        android:inputType="textPassword"
+                        android:background="@drawable/input_bg"
+                        android:paddingStart="16dp"
+                        android:paddingEnd="16dp"
+                        android:textSize="15sp"
+                        android:layout_marginBottom="20dp"/>
+
+                    <TextView
+                        android:text="GENDER"
+                        android:textSize="11sp"
+                        android:textStyle="bold"
+                        android:textColor="#1976D2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="6dp"/>
+
+                    <Spinner
+                        android:id="@+id/spGender"
+                        android:layout_width="match_parent"
+                        android:layout_height="52dp"
+                        android:background="@drawable/input_bg"
+                        android:layout_marginBottom="16dp"/>
+
+                    <TextView
+                        android:text="I AM A..."
+                        android:textSize="11sp"
+                        android:textStyle="bold"
+                        android:textColor="#1976D2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"/>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginBottom="24dp">
+
+                        <Button
+                            android:id="@+id/btnRoleSeeker"
+                            android:layout_width="0dp"
+                            android:layout_height="52dp"
+                            android:layout_weight="1"
+                            android:text="Job Seeker"
+                            android:textSize="14sp"
+                            android:background="@drawable/btn_primary"
+                            android:textColor="@android:color/white"
+                            android:layout_marginEnd="8dp"/>
+
+                        <Button
+                            android:id="@+id/btnRoleEmployer"
+                            android:layout_width="0dp"
+                            android:layout_height="52dp"
+                            android:layout_weight="1"
+                            android:text="Employer"
+                            android:textSize="14sp"
+                            android:background="@drawable/btn_outline"
+                            android:textColor="#F4F4F6"/>
+
+                    </LinearLayout>
+
+                    <Button
+                        android:id="@+id/btnRegister"
+                        android:text="CREATE ACCOUNT"
+                        android:textSize="15sp"
+                        android:textStyle="bold"
+                        android:letterSpacing="0.05"
+                        android:textColor="@android:color/white"
+                        android:background="@drawable/btn_primary"
+                        android:layout_width="match_parent"
+                        android:layout_height="52dp"/>
+
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <TextView
+                android:id="@+id/tvBackToLogin"
+                android:text="Already have an account? Sign In"
+                android:textSize="14sp"
+                android:textColor="#90CAF9"
+                android:gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="32dp"/>
+
+        </LinearLayout>
+    </ScrollView>
+</RelativeLayout>

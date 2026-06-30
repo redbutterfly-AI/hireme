@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "282572871581",
+    "project_id": "hiremeapp-a7721",
+    "storage_bucket": "hiremeapp-a7721.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:282572871581:android:a1f1b8cd0d2e2419ea8174",
+        "android_client_info": {
+          "package_name": "com.example.hiremeapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBqTfW3kiZy_HUSJrfWs95FtSSmhyVeeSY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:282572871581:android:4521bfd096948857ea8174",
+        "android_client_info": {
+          "package_name": "com.hireme.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBqTfW3kiZy_HUSJrfWs95FtSSmhyVeeSY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

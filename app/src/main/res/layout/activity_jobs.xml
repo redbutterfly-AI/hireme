@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#F0F4F8">
+
+    <!-- Header -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="#0D1B2A"
+        android:padding="16dp">
+
+        <TextView
+            android:text="Find Jobs"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:textColor="@android:color/white"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="12dp"/>
+
+        <!-- Search Bar -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:orientation="horizontal"
+            android:background="#FFFFFF">
+
+            <EditText
+                android:id="@+id/etSearch"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:hint="Search by title or keyword..."
+                android:paddingStart="14dp"
+                android:background="@android:color/transparent"
+                android:inputType="text"
+                android:singleLine="true"
+                android:textSize="14sp"/>
+
+            <Button
+                android:id="@+id/btnSearch"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="Search"
+                android:textSize="13sp"
+                android:backgroundTint="#1976D2"
+                android:textColor="@android:color/white"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <!-- Location Filter Chips -->
+    <HorizontalScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/white"
+        android:padding="8dp"
+        android:elevation="2dp">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingStart="4dp"
+            android:paddingEnd="4dp">
+
+            <Button android:id="@+id/btnFilterAll"
+                android:layout_width="wrap_content" android:layout_height="34dp"
+                android:text="All" android:textSize="12sp"
+                android:backgroundTint="#1976D2" android:textColor="@android:color/white"
+                android:layout_marginEnd="6dp"/>
+
+            <Button android:id="@+id/btnFilterBlantyre"
+                android:layout_width="wrap_content" android:layout_height="34dp"
+                android:text="Blantyre" android:textSize="12sp"
+                android:backgroundTint="#E0E0E0" android:textColor="#333333"
+                android:layout_marginEnd="6dp"/>
+
+            <Button android:id="@+id/btnFilterLilongwe"
+                android:layout_width="wrap_content" android:layout_height="34dp"
+                android:text="Lilongwe" android:textSize="12sp"
+                android:backgroundTint="#E0E0E0" android:textColor="#333333"
+                android:layout_marginEnd="6dp"/>
+
+            <Button android:id="@+id/btnFilterMzuzu"
+                android:layout_width="wrap_content" android:layout_height="34dp"
+                android:text="Mzuzu" android:textSize="12sp"
+                android:backgroundTint="#E0E0E0" android:textColor="#333333"
+                android:layout_marginEnd="6dp"/>
+
+            <Button android:id="@+id/btnFilterZomba"
+                android:layout_width="wrap_content" android:layout_height="34dp"
+                android:text="Zomba" android:textSize="12sp"
+                android:backgroundTint="#E0E0E0" android:textColor="#333333"
+                android:layout_marginEnd="6dp"/>
+
+            <Button android:id="@+id/btnFilterNearMe"
+                android:layout_width="wrap_content" android:layout_height="34dp"
+                android:text="Near Me ??" android:textSize="12sp"
+                android:backgroundTint="#FF6F00" android:textColor="@android:color/white"
+                android:layout_marginEnd="6dp"/>
+
+        </LinearLayout>
+    </HorizontalScrollView>
+
+    <!-- Sort and Count Row -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="12dp"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:id="@+id/tvResultCount"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Loading..."
+            android:textSize="13sp"
+            android:textColor="#666666"/>
+
+        <Spinner
+            android:id="@+id/spinnerSort"
+            android:layout_width="140dp"
+            android:layout_height="36dp"
+            android:background="@drawable/input_bg"/>
+
+    </LinearLayout>
+
+    <!-- Jobs List -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerJobs"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:padding="8dp"/>
+
+</LinearLayout>

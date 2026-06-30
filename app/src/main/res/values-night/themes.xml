@@ -1,0 +1,7 @@
+<resources>
+
+    <style
+        name="Theme.HireMeApp"
+        parent="Theme.Material3.DayNight.NoActionBar"/>
+
+</resources>
