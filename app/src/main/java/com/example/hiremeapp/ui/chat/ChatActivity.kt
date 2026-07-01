@@ -29,6 +29,7 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
+
 class ChatActivity : AppCompatActivity() {
 
     private lateinit var recyclerView: RecyclerView
@@ -43,12 +44,13 @@ class ChatActivity : AppCompatActivity() {
     private var otherUserId: Int = 0
 
     private var myUsername: String = ""
-    private var myUserId: Int = 0  
+    private var myUserId: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_chat)
 
+       
         conversationId = intent.getIntExtra("CONVERSATION_ID", 0)
         otherUserId = intent.getIntExtra("RECEIVER_ID", 0)
 
@@ -59,21 +61,26 @@ class ChatActivity : AppCompatActivity() {
 
         findViewById<TextView>(R.id.tvChatTitle).text = otherUser
 
+        
         recyclerView = findViewById(R.id.recyclerMessages)
         etMessage = findViewById(R.id.etMessage)
         btnSend = findViewById(R.id.btnSend)
 
-        findViewById<ImageButton>(R.id.btnChatBack).setOnClickListener { finish() }
+        findViewById<ImageButton>(R.id.btnChatBack).setOnClickListener {
+            finish()
+        }
 
         val prefs = getSharedPreferences("hireme", MODE_PRIVATE)
         myUsername = prefs.getString("username", "") ?: ""
-        myUserId = prefs.getInt("user_id", 0)  
+        myUserId = prefs.getInt("user_id", 0)
 
+        
         adapter = MessageAdapter(messages, myUsername)
         recyclerView.layoutManager = LinearLayoutManager(this).apply {
             stackFromEnd = true
         }
         recyclerView.adapter = adapter
+
 
         if (conversationId == 0 && otherUserId != 0) {
             startConversationThenConnect()
@@ -84,6 +91,7 @@ class ChatActivity : AppCompatActivity() {
             Toast.makeText(this, "Cannot start chat: missing info", Toast.LENGTH_SHORT).show()
         }
 
+        
         btnSend.setOnClickListener {
             val text = etMessage.text.toString().trim()
             if (text.isNotEmpty()) {
@@ -93,7 +101,7 @@ class ChatActivity : AppCompatActivity() {
         }
     }
 
-  
+    
     private fun loadMessages() {
         val token = "Bearer " +
                 (getSharedPreferences("hireme", MODE_PRIVATE)
@@ -101,8 +109,7 @@ class ChatActivity : AppCompatActivity() {
 
         CoroutineScope(Dispatchers.IO).launch {
             try {
-                val response =
-                    RetrofitClient.instance.getMessages(token, conversationId)
+                val response = RetrofitClient.instance.getMessages(token, conversationId).execute()
 
                 withContext(Dispatchers.Main) {
                     if (response.isSuccessful) {
@@ -123,6 +130,7 @@ class ChatActivity : AppCompatActivity() {
         }
     }
 
+   
     private fun startConversationThenConnect() {
         val token = getSharedPreferences("hireme", MODE_PRIVATE)
             .getString("token", "") ?: ""
@@ -137,9 +145,7 @@ class ChatActivity : AppCompatActivity() {
                 response: Response<Conversation>
             ) {
                 if (response.isSuccessful) {
-                    val conv = response.body() ?: return
-                    conversationId = conv.id
-
+                    conversationId = response.body()?.id ?: 0
                     loadMessages()
                     connectWebSocket()
                 } else {
@@ -161,7 +167,8 @@ class ChatActivity : AppCompatActivity() {
         })
     }
 
-  
+   
+
     private fun connectWebSocket() {
         val token = getSharedPreferences("hireme", MODE_PRIVATE)
             .getString("token", "") ?: ""
@@ -185,6 +192,7 @@ class ChatActivity : AppCompatActivity() {
                     sender_name = json.optString("sender_username", ""),
                     content = json.optString("message", ""),
                     timestamp = json.optString("timestamp", ""),
+                    status = json.optString("status", "sent"),
                     is_read = false
                 )
 
@@ -211,7 +219,8 @@ class ChatActivity : AppCompatActivity() {
         })
     }
 
-   
+    
+
     private fun sendMessage(text: String) {
         if (text.isBlank()) return
 
@@ -221,20 +230,20 @@ class ChatActivity : AppCompatActivity() {
         }
 
         
-        val tempMessage = Message(
+        val temp = Message(
             id = -1,
             sender = myUserId,
             sender_name = myUsername,
             content = text,
             timestamp = System.currentTimeMillis().toString(),
+            status = "sent",
             is_read = false
         )
 
-        messages.add(tempMessage)
+        messages.add(temp)
         adapter.notifyItemInserted(messages.size - 1)
         recyclerView.scrollToPosition(messages.size - 1)
 
-   
         webSocket?.send(json.toString())
     }
 }

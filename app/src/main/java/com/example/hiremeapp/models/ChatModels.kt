@@ -28,5 +28,6 @@ data class Message(
     val sender_picture: String? = null,
     val content: String? = "",
     val timestamp: String? = "",
-    val is_read: Boolean = false
+    val is_read: Boolean = false,
+    val status: String = "sent"
 )
