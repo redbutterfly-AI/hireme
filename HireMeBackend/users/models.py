@@ -29,7 +29,6 @@ class User(AbstractUser):
     cv_filename    = models.CharField(max_length=255, blank=True)
     profile_picture = models.ImageField(upload_to='profile_pictures/', blank=True, null=True)
     bio            = models.TextField(blank=True)
-    company_name   = models.CharField(max_length=200, blank=True)
     location       = models.CharField(max_length=100, blank=True)
 
     def __str__(self):

@@ -25,6 +25,9 @@ import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 class ChatActivity : AppCompatActivity() {
 
@@ -32,30 +35,44 @@ class ChatActivity : AppCompatActivity() {
     private lateinit var adapter: MessageAdapter
     private lateinit var etMessage: EditText
     private lateinit var btnSend: ImageButton
+
     private var webSocket: WebSocket? = null
     private val messages = mutableListOf<Message>()
+
     private var conversationId: Int = 0
     private var otherUserId: Int = 0
+
+    private var myUsername: String = ""
+    private var myUserId: Int = 0  
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_chat)
 
         conversationId = intent.getIntExtra("CONVERSATION_ID", 0)
-        otherUserId = intent.getIntExtra("RECEIVER_ID", intent.getIntExtra("other_user_id", 0))
-        val otherUser = intent.getStringExtra("OTHER_USER") ?: intent.getStringExtra("other_user_name") ?: "Chat"
+        otherUserId = intent.getIntExtra("RECEIVER_ID", 0)
+
+        val otherUser =
+            intent.getStringExtra("OTHER_USER")
+                ?: intent.getStringExtra("other_user_name")
+                ?: "Chat"
 
         findViewById<TextView>(R.id.tvChatTitle).text = otherUser
 
         recyclerView = findViewById(R.id.recyclerMessages)
         etMessage = findViewById(R.id.etMessage)
         btnSend = findViewById(R.id.btnSend)
+
         findViewById<ImageButton>(R.id.btnChatBack).setOnClickListener { finish() }
 
         val prefs = getSharedPreferences("hireme", MODE_PRIVATE)
-        val username = prefs.getString("username", "") ?: ""
-        adapter = MessageAdapter(messages, username)
-        recyclerView.layoutManager = LinearLayoutManager(this).also { it.stackFromEnd = true }
+        myUsername = prefs.getString("username", "") ?: ""
+        myUserId = prefs.getInt("user_id", 0)  
+
+        adapter = MessageAdapter(messages, myUsername)
+        recyclerView.layoutManager = LinearLayoutManager(this).apply {
+            stackFromEnd = true
+        }
         recyclerView.adapter = adapter
 
         if (conversationId == 0 && otherUserId != 0) {
@@ -76,83 +93,148 @@ class ChatActivity : AppCompatActivity() {
         }
     }
 
-    private fun startConversationThenConnect() {
-        val token = getSharedPreferences("hireme", MODE_PRIVATE).getString("token", "") ?: ""
-        RetrofitClient.instance.startConversation("Bearer $token", mapOf("user_id" to otherUserId))
-            .enqueue(object : Callback<Conversation> {
-                override fun onResponse(call: Call<Conversation>, response: Response<Conversation>) {
-                    if (response.isSuccessful) {
-                        val conv = response.body() ?: return
-                        conversationId = conv.id
-                        loadMessages()
-                        connectWebSocket()
-                    } else {
-                        Toast.makeText(this@ChatActivity, "Failed to start chat", Toast.LENGTH_SHORT).show()
-                    }
-                }
-                override fun onFailure(call: Call<Conversation>, t: Throwable) {
-                    Toast.makeText(this@ChatActivity, "Error: ${t.message}", Toast.LENGTH_SHORT).show()
-                }
-            })
-    }
-
+  
     private fun loadMessages() {
-        val prefs = getSharedPreferences("hireme", MODE_PRIVATE)
-        val token = "Bearer " + (prefs.getString("token", "") ?: "")
+        val token = "Bearer " +
+                (getSharedPreferences("hireme", MODE_PRIVATE)
+                    .getString("token", "") ?: "")
+
         CoroutineScope(Dispatchers.IO).launch {
             try {
-                val response = RetrofitClient.instance.getMessages(token, conversationId)
+                val response =
+                    RetrofitClient.instance.getMessages(token, conversationId)
+
                 withContext(Dispatchers.Main) {
                     if (response.isSuccessful) {
                         messages.clear()
                         messages.addAll(response.body() ?: emptyList())
                         adapter.notifyDataSetChanged()
-                        if (messages.isNotEmpty()) recyclerView.scrollToPosition(messages.size - 1)
+
+                        if (messages.isNotEmpty()) {
+                            recyclerView.scrollToPosition(messages.size - 1)
+                        }
                     }
                 }
-            } catch (e: Exception) { }
+            } catch (e: Exception) {
+                runOnUiThread {
+                    Toast.makeText(this@ChatActivity, e.message, Toast.LENGTH_SHORT).show()
+                }
+            }
         }
     }
 
+    private fun startConversationThenConnect() {
+        val token = getSharedPreferences("hireme", MODE_PRIVATE)
+            .getString("token", "") ?: ""
+
+        RetrofitClient.instance.startConversation(
+            "Bearer $token",
+            mapOf("user_id" to otherUserId)
+        ).enqueue(object : Callback<Conversation> {
+
+            override fun onResponse(
+                call: Call<Conversation>,
+                response: Response<Conversation>
+            ) {
+                if (response.isSuccessful) {
+                    val conv = response.body() ?: return
+                    conversationId = conv.id
+
+                    loadMessages()
+                    connectWebSocket()
+                } else {
+                    Toast.makeText(
+                        this@ChatActivity,
+                        "Failed to start chat",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
+
+            override fun onFailure(call: Call<Conversation>, t: Throwable) {
+                Toast.makeText(
+                    this@ChatActivity,
+                    "Error: ${t.message}",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        })
+    }
+
+  
     private fun connectWebSocket() {
-        val prefs = getSharedPreferences("hireme", MODE_PRIVATE)
-        val token = prefs.getString("token", "") ?: ""
+        val token = getSharedPreferences("hireme", MODE_PRIVATE)
+            .getString("token", "") ?: ""
+
         val roomName = "conversation_$conversationId"
+
         val client = OkHttpClient()
+
         val request = Request.Builder()
             .url("ws://10.0.2.2:8000/ws/chat/$roomName/?token=$token")
             .build()
+
         webSocket = client.newWebSocket(request, object : WebSocketListener() {
+
             override fun onMessage(webSocket: WebSocket, text: String) {
                 val json = JSONObject(text)
+
                 val msg = Message(
-                    id = 0,
-                    sender = json.getInt("sender_id"),
-                    sender_name = json.getString("sender_username"),
-                    content = json.getString("message"),
-                    timestamp = json.getString("timestamp"),
+                    id = json.optInt("id", 0),
+                    sender = json.optInt("sender_id", 0),
+                    sender_name = json.optString("sender_username", ""),
+                    content = json.optString("message", ""),
+                    timestamp = json.optString("timestamp", ""),
                     is_read = false
                 )
+
                 runOnUiThread {
                     messages.add(msg)
                     adapter.notifyItemInserted(messages.size - 1)
                     recyclerView.scrollToPosition(messages.size - 1)
                 }
             }
-            override fun onFailure(webSocket: WebSocket, t: Throwable, response: OkResponse?) {
-                runOnUiThread { Toast.makeText(this@ChatActivity, "Connection failed: ${t.message}", Toast.LENGTH_SHORT).show() }
+
+            override fun onFailure(
+                webSocket: WebSocket,
+                t: Throwable,
+                response: OkResponse?
+            ) {
+                runOnUiThread {
+                    Toast.makeText(
+                        this@ChatActivity,
+                        "Connection failed: ${t.message}",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
             }
         })
     }
 
+   
     private fun sendMessage(text: String) {
-        val json = JSONObject()
-        json.put("message", text)
-        webSocket?.send(json.toString())
-    }
+        if (text.isBlank()) return
 
-    override fun onDestroy() {
-        super.onDestroy()
-        webSocket?.close(1000, "Activity destroyed")
+        val json = JSONObject().apply {
+            put("message", text)
+            put("conversation_id", conversationId)
+        }
+
+        
+        val tempMessage = Message(
+            id = -1,
+            sender = myUserId,
+            sender_name = myUsername,
+            content = text,
+            timestamp = System.currentTimeMillis().toString(),
+            is_read = false
+        )
+
+        messages.add(tempMessage)
+        adapter.notifyItemInserted(messages.size - 1)
+        recyclerView.scrollToPosition(messages.size - 1)
+
+   
+        webSocket?.send(json.toString())
     }
 }

@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.hiremeapp.models.UserLoginRequest
@@ -22,6 +23,11 @@ class LoginActivity : AppCompatActivity() {
         val etPassword      = findViewById<EditText>(R.id.etLoginPassword)
         val btnLogin        = findViewById<Button>(R.id.btnLogin)
         val btnGoToRegister = findViewById<Button>(R.id.btnGoToRegister)
+        val tvForgotPassword = findViewById<TextView>(R.id.tvForgotPassword)
+
+        tvForgotPassword.setOnClickListener {
+            startActivity(Intent(this, ForgotPasswordActivity::class.java))
+        }
 
         btnGoToRegister.setOnClickListener {
             startActivity(Intent(this, RegisterActivity::class.java))

@@ -137,13 +137,11 @@ interface ApiService {
         @Header("Authorization") token: String
     ): Call<List<UserProfile>>
 
+    // Conversations
     @GET("api/messages/")
-    suspend fun getConversations(
+    fun getConversations(
         @Header("Authorization") token: String
-    ): Response<List<Conversation>>
-
-    @GET("api/messages/unread-count/")
-    fun getUnreadMessagesCount(@Header("Authorization") token: String): Call<Map<String, Int>>
+    ): Call<List<Conversation>>
 
     @POST("api/messages/start/")
     fun startConversation(
@@ -151,18 +149,30 @@ interface ApiService {
         @Body data: Map<String, Int>
     ): Call<Conversation>
 
+    // Messages in conversation
     @GET("api/messages/{id}/messages/")
-    suspend fun getMessages(
+    fun getMessages(
         @Header("Authorization") token: String,
         @Path("id") conversationId: Int
-    ): Response<List<Message>>
+    ): Call<List<Message>>
 
-    @GET("api/messages/chat/{user_id}/")
-    fun getChatMessages(
+    // SEND MESSAGE (FIXED - IMPORTANT)
+    @POST("api/messages/send/")
+    fun sendMessage(
         @Header("Authorization") token: String,
-        @Path("user_id") userId: Int
-    ): Call<List<ChatMessage>>
+        @Body data: Map<String, Any>
+    ): Call<Message>
 
-    @POST("api/notifications/mark-all-read/")
-    fun markAllRead(@Header("Authorization") token: String): Call<Map<String, String>>
+    // MARK AS READ (✓✓ BLUE)
+    @POST("api/messages/{id}/read/")
+    fun markAsRead(
+        @Header("Authorization") token: String,
+        @Path("id") messageId: Int
+    ): Call<Map<String, String>>
+
+    // Notifications (keep)
+    @GET("api/messages/unread-count/")
+    fun getUnreadMessagesCount(
+        @Header("Authorization") token: String
+    ): Call<Map<String, Int>>
 }

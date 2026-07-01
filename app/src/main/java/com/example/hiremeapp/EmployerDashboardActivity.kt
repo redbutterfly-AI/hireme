@@ -4,12 +4,15 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.ImageButton
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.hiremeapp.models.Application
+import com.example.hiremeapp.models.Conversation
 import com.example.hiremeapp.models.UpdateApplicationRequest
+import com.example.hiremeapp.models.UserProfile
 import com.example.hiremeapp.network.RetrofitClient
 import com.example.hiremeapp.ui.chat.ChatActivity
 import retrofit2.Call
@@ -26,7 +29,7 @@ class EmployerDashboardActivity : AppCompatActivity() {
         setContentView(R.layout.activity_employer_dashboard)
 
         val prefs = getSharedPreferences("hireme", MODE_PRIVATE)
-        token     = prefs.getString("token", "") ?: ""
+        token = prefs.getString("token", "") ?: ""
 
         recyclerView = findViewById(R.id.recyclerApplicants)
         recyclerView.layoutManager = LinearLayoutManager(this)
@@ -49,16 +52,40 @@ class EmployerDashboardActivity : AppCompatActivity() {
         findViewById<Button>(R.id.btnLogout).setOnClickListener {
             prefs.edit().clear().apply()
             Toast.makeText(this, "Logged out", Toast.LENGTH_SHORT).show()
-            val i = Intent(this, LoginActivity::class.java)
-            i.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-            startActivity(i)
+            startActivity(Intent(this, LoginActivity::class.java).apply {
+                flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            })
             finish()
         }
 
-        if (token.isNotEmpty()) fetchMyJobApplications(token)
+        if (token.isNotEmpty()) {
+            loadEmployerProfile()
+            fetchMyJobApplications()
+        }
     }
 
-    private fun fetchMyJobApplications(token: String) {
+    override fun onResume() {
+        super.onResume()
+        if (token.isNotEmpty()) {
+            loadEmployerProfile()
+            fetchMyJobApplications()
+        }
+    }
+
+    private fun loadEmployerProfile() {
+        RetrofitClient.instance.getProfile("Bearer $token")
+            .enqueue(object : Callback<UserProfile> {
+                override fun onResponse(call: Call<UserProfile>, response: Response<UserProfile>) {
+                    if (response.isSuccessful) {
+                        val profile = response.body() ?: return
+                        findViewById<TextView>(R.id.tvEmployerName).text = profile.username
+                    }
+                }
+                override fun onFailure(call: Call<UserProfile>, t: Throwable) {}
+            })
+    }
+
+    private fun fetchMyJobApplications() {
         RetrofitClient.instance.getMyJobApplications("Bearer $token")
             .enqueue(object : Callback<List<Application>> {
                 override fun onResponse(call: Call<List<Application>>, response: Response<List<Application>>) {
@@ -80,32 +107,49 @@ class EmployerDashboardActivity : AppCompatActivity() {
     }
 
     private fun updateApplicationStatus(appId: Int, status: String) {
-        if (token.isEmpty()) return
-        RetrofitClient.instance.updateApplicationStatus("Bearer $token", appId, UpdateApplicationRequest(status))
-            .enqueue(object : Callback<Map<String, String>> {
-                override fun onResponse(call: Call<Map<String, String>>, response: Response<Map<String, String>>) {
-                    if (response.isSuccessful) {
-                        Toast.makeText(this@EmployerDashboardActivity, "Application $status", Toast.LENGTH_SHORT).show()
-                        fetchMyJobApplications(token)
-                    }
+        RetrofitClient.instance.updateApplicationStatus(
+            "Bearer $token", appId, UpdateApplicationRequest(status)
+        ).enqueue(object : Callback<Map<String, String>> {
+            override fun onResponse(call: Call<Map<String, String>>, response: Response<Map<String, String>>) {
+                if (response.isSuccessful) {
+                    Toast.makeText(this@EmployerDashboardActivity, "Application $status", Toast.LENGTH_SHORT).show()
+                    fetchMyJobApplications()
+                } else {
+                    Toast.makeText(this@EmployerDashboardActivity, "Failed to update", Toast.LENGTH_SHORT).show()
                 }
-                override fun onFailure(call: Call<Map<String, String>>, t: Throwable) {
-                    Toast.makeText(this@EmployerDashboardActivity, "Error: ${t.message}", Toast.LENGTH_SHORT).show()
-                }
-            })
+            }
+            override fun onFailure(call: Call<Map<String, String>>, t: Throwable) {
+                Toast.makeText(this@EmployerDashboardActivity, "Error: ${t.message}", Toast.LENGTH_SHORT).show()
+            }
+        })
     }
 
-    // FIXED: directly open ChatActivity with applicant info, NOT startConversation
     private fun openChat(application: Application) {
-        val i = Intent(this, ChatActivity::class.java)
-        i.putExtra("other_user_id", application.applicant)
-        i.putExtra("other_user_name", application.applicant_name)
-        startActivity(i)
+        RetrofitClient.instance.startConversation(
+            "Bearer $token",
+            mapOf("user_id" to application.applicant, "job_id" to application.job)
+        ).enqueue(object : Callback<Conversation> {
+            override fun onResponse(call: Call<Conversation>, response: Response<Conversation>) {
+                if (response.isSuccessful) {
+                    val conv = response.body() ?: return
+                    startActivity(Intent(this@EmployerDashboardActivity, ChatActivity::class.java).apply {
+                        putExtra("CONVERSATION_ID", conv.id)
+                        putExtra("OTHER_USER", application.applicant_name)
+                        putExtra("RECEIVER_ID", application.applicant)
+                    })
+                } else {
+                    Toast.makeText(this@EmployerDashboardActivity, "Failed to start chat", Toast.LENGTH_SHORT).show()
+                }
+            }
+            override fun onFailure(call: Call<Conversation>, t: Throwable) {
+                Toast.makeText(this@EmployerDashboardActivity, "Error: ${t.message}", Toast.LENGTH_SHORT).show()
+            }
+        })
     }
 
     private fun viewCV(application: Application) {
-        val i = Intent(this, ProfileActivity::class.java)
-        i.putExtra("view_other_id", application.applicant)
-        startActivity(i)
+        startActivity(Intent(this, ProfileActivity::class.java).apply {
+            putExtra("view_other_id", application.applicant)
+        })
     }
 }
