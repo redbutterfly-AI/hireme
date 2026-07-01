@@ -53,6 +53,9 @@ class ChatActivity : AppCompatActivity() {
        
         conversationId = intent.getIntExtra("CONVERSATION_ID", 0)
         otherUserId = intent.getIntExtra("RECEIVER_ID", 0)
+        if (otherUserId == 0) {
+            otherUserId = intent.getIntExtra("other_user_id", 0)
+        }
 
         val otherUser =
             intent.getStringExtra("OTHER_USER")
@@ -72,7 +75,13 @@ class ChatActivity : AppCompatActivity() {
 
         val prefs = getSharedPreferences("hireme", MODE_PRIVATE)
         myUsername = prefs.getString("username", "") ?: ""
-        myUserId = prefs.getInt("user_id", 0)
+        
+        // userId might be stored as String or Int depending on which version of LoginActivity was used
+        myUserId = try {
+            prefs.getInt("user_id", 0)
+        } catch (e: Exception) {
+            prefs.getString("user_id", "0")?.toIntOrNull() ?: 0
+        }
 
         
         adapter = MessageAdapter(messages, myUsername)
@@ -173,12 +182,10 @@ class ChatActivity : AppCompatActivity() {
         val token = getSharedPreferences("hireme", MODE_PRIVATE)
             .getString("token", "") ?: ""
 
-        val roomName = "conversation_$conversationId"
-
         val client = OkHttpClient()
 
         val request = Request.Builder()
-            .url("ws://10.0.2.2:8000/ws/chat/$roomName/?token=$token")
+            .url("ws://10.0.2.2:8000/ws/chat/$conversationId/?token=$token")
             .build()
 
         webSocket = client.newWebSocket(request, object : WebSocketListener() {

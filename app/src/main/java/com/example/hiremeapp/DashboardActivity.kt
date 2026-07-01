@@ -80,6 +80,10 @@ class DashboardActivity : AppCompatActivity() {
         RetrofitClient.instance.getUnreadCount("Bearer $token")
             .enqueue(object : Callback<Map<String, Int>> {
                 override fun onResponse(call: Call<Map<String, Int>>, response: Response<Map<String, Int>>) {
+                    if (response.code() == 401) {
+                        handleLogout()
+                        return
+                    }
                     if (response.isSuccessful) {
                         val count = response.body()?.get("unread_count") ?: 0
                         if (count > 0) {
@@ -94,10 +98,22 @@ class DashboardActivity : AppCompatActivity() {
             })
     }
 
+    private fun handleLogout() {
+        getSharedPreferences("hireme", MODE_PRIVATE).edit().clear().apply()
+        startActivity(Intent(this, LoginActivity::class.java).apply {
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        })
+        finish()
+    }
+
     private fun fetchUnreadMessagesCount(token: String) {
         RetrofitClient.instance.getUnreadMessagesCount("Bearer $token")
             .enqueue(object : Callback<Map<String, Int>> {
                 override fun onResponse(call: Call<Map<String, Int>>, response: Response<Map<String, Int>>) {
+                    if (response.code() == 401) {
+                        handleLogout()
+                        return
+                    }
                     if (response.isSuccessful) {
                         val count = response.body()?.get("unread_count") ?: 0
                         if (count > 0) {

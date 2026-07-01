@@ -95,8 +95,8 @@ class JobDetailActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
             val chatIntent = Intent(this@JobDetailActivity, ChatActivity::class.java)
-            chatIntent.putExtra("other_user_id", employerId)
-            chatIntent.putExtra("other_user_name", employerName)
+            chatIntent.putExtra("RECEIVER_ID", employerId)
+            chatIntent.putExtra("OTHER_USER", employerName)
             startActivity(chatIntent)
         }
     }

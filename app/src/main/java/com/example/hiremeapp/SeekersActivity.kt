@@ -46,8 +46,8 @@ class SeekersActivity : AppCompatActivity() {
                             },
                             onChat = { seeker ->
                                 val i = Intent(this@SeekersActivity, ChatActivity::class.java)
-                                i.putExtra("other_user_id", seeker.id)
-                                i.putExtra("other_user_name", seeker.username)
+                                i.putExtra("RECEIVER_ID", seeker.id)
+                                i.putExtra("OTHER_USER", seeker.username)
                                 startActivity(i)
                             }
                         )

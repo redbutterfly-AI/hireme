@@ -76,6 +76,10 @@ class EmployerDashboardActivity : AppCompatActivity() {
         RetrofitClient.instance.getProfile("Bearer $token")
             .enqueue(object : Callback<UserProfile> {
                 override fun onResponse(call: Call<UserProfile>, response: Response<UserProfile>) {
+                    if (response.code() == 401) {
+                        handleLogout()
+                        return
+                    }
                     if (response.isSuccessful) {
                         val profile = response.body() ?: return
                         findViewById<TextView>(R.id.tvEmployerName).text = profile.username
@@ -89,6 +93,10 @@ class EmployerDashboardActivity : AppCompatActivity() {
         RetrofitClient.instance.getMyJobApplications("Bearer $token")
             .enqueue(object : Callback<List<Application>> {
                 override fun onResponse(call: Call<List<Application>>, response: Response<List<Application>>) {
+                    if (response.code() == 401) {
+                        handleLogout()
+                        return
+                    }
                     if (response.isSuccessful) {
                         val applications = response.body() ?: emptyList()
                         recyclerView.adapter = EmployerApplicationsAdapter(
@@ -151,5 +159,13 @@ class EmployerDashboardActivity : AppCompatActivity() {
         startActivity(Intent(this, ProfileActivity::class.java).apply {
             putExtra("view_other_id", application.applicant)
         })
+    }
+
+    private fun handleLogout() {
+        getSharedPreferences("hireme", MODE_PRIVATE).edit().clear().apply()
+        startActivity(Intent(this, LoginActivity::class.java).apply {
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        })
+        finish()
     }
 }
