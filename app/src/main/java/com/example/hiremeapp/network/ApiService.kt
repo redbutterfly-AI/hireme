@@ -127,6 +127,11 @@ interface ApiService {
         @Header("Authorization") token: String
     ): Call<List<Notification>>
 
+    @POST("api/notifications/mark-all-read/")
+    fun markAllRead(
+        @Header("Authorization") token: String
+    ): Call<Map<String, String>>
+
     @GET("api/notifications/unread-count/")
     fun getUnreadCount(
         @Header("Authorization") token: String

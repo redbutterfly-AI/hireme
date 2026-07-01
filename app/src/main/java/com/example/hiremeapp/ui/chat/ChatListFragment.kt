@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.hiremeapp.R
+import com.example.hiremeapp.models.Conversation
 import com.example.hiremeapp.network.RetrofitClient
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -39,11 +40,11 @@ class ChatListFragment : Fragment() {
 
         CoroutineScope(Dispatchers.IO).launch {
             try {
-                val response = RetrofitClient.instance.getConversations(token)
+                val response = RetrofitClient.instance.getConversations(token).execute()
                 withContext(Dispatchers.Main) {
                     if (response.isSuccessful) {
-                        val conversations = response.body() ?: emptyList()
-                        recyclerView.adapter = ConversationAdapter(conversations) { conversation ->
+                        val conversations: List<Conversation> = response.body() ?: emptyList()
+                        recyclerView.adapter = ConversationAdapter(conversations) { conversation: Conversation ->
                             val intent = Intent(requireContext(), ChatActivity::class.java)
                             intent.putExtra("CONVERSATION_ID", conversation.id)
                             intent.putExtra("OTHER_USER", conversation.other_user?.username ?: "Chat")
