@@ -18,32 +18,28 @@ class Message(models.Model):
     ]
 
     conversation = models.ForeignKey(
-            Conversation,
-            on_delete=models.CASCADE,
-            related_name='messages'
-        )
+        Conversation,
+        on_delete=models.CASCADE,
+        related_name='messages'
+    )
 
-        sender = models.ForeignKey(
-            settings.AUTH_USER_MODEL,
-            on_delete=models.CASCADE,
-            related_name='sent_messages'
-        )
+    sender = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name='sent_messages'
+    )
 
-        content = models.TextField()
+    content = models.TextField()
 
-        status = models.CharField(
-            max_length=10,
-            choices=STATUS_CHOICES,
-            default='sent'
-        )
+    status = models.CharField(
+        max_length=20,
+        default="sent"
+    )
 
-        timestamp = models.DateTimeField(auto_now_add=True)
+    timestamp = models.DateTimeField(auto_now_add=True)
 
-        delivered_at = models.DateTimeField(null=True, blank=True)
-        read_at = models.DateTimeField(null=True, blank=True)
-
-        class Meta:
-                ordering = ['timestamp']
+    class Meta:
+        ordering = ['timestamp']
 
     def __str__(self):
         return f"{self.sender.username}: {self.content[:30]}"

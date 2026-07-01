@@ -23,26 +23,38 @@ def my_conversations(request):
 def start_conversation(request):
     other_id = request.data.get('user_id')
     job_id   = request.data.get('job_id')
+
+    if not other_id:
+        return Response({'error': 'user_id is required.'}, status=400)
+
     try:
         other = User.objects.get(pk=other_id)
-    except User.DoesNotExist:
+    except (User.DoesNotExist, ValueError, TypeError):
         return Response({'error': 'User not found.'}, status=404)
 
+    if other == request.user:
+        return Response({'error': 'You cannot chat with yourself.'}, status=400)
+
+    # Find conversation with EXACTLY these participants?
+    # For simplicity, we find any conversation containing both.
     existing = Conversation.objects.filter(
         participants=request.user
-    ).filter(participants=other)
-    if existing.exists():
-        conv = existing.first()
+    ).filter(participants=other).first()
+
+    if existing:
+        conv = existing
     else:
         conv = Conversation.objects.create()
-        if job_id:
-            try:
-                from jobs.models import Job
-                conv.job = Job.objects.get(pk=job_id)
-                conv.save()
-            except Exception:
-                pass
         conv.participants.add(request.user, other)
+
+    if job_id:
+        try:
+            from jobs.models import Job
+            job = Job.objects.get(pk=job_id)
+            conv.job = job
+            conv.save()
+        except (Job.DoesNotExist, ValueError, TypeError):
+            pass
 
     serializer = ConversationSerializer(conv, context={'request': request})
     return Response(serializer.data)
@@ -58,7 +70,7 @@ def conversation_messages(request, conv_id):
 
     Message.objects.filter(
         conversation=conv
-    ).exclude(sender=request.user).update(is_read=True)
+    ).exclude(sender=request.user).update(status='read')
 
     messages = conv.messages.order_by('timestamp')
     serializer = MessageSerializer(messages, many=True, context={'request': request})
@@ -83,7 +95,7 @@ def chat_with_user(request, user_id):
 
     Message.objects.filter(
         conversation=conv
-    ).exclude(sender=request.user).update(is_read=True)
+    ).exclude(sender=request.user).update(status='read')
 
     messages = conv.messages.order_by('timestamp')
     serializer = MessageSerializer(messages, many=True, context={'request': request})
@@ -112,7 +124,6 @@ def send_message(request, conv_id):
 @permission_classes([IsAuthenticated])
 def unread_messages_count(request):
     count = Message.objects.filter(
-        conversation__participants=request.user,
-        is_read=False
-    ).exclude(sender=request.user).count()
+        conversation__participants=request.user
+    ).exclude(status='read').exclude(sender=request.user).count()
     return Response({'unread_count': count})

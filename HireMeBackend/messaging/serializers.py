@@ -4,11 +4,15 @@ from .models import Conversation, Message
 class MessageSerializer(serializers.ModelSerializer):
     sender_name = serializers.CharField(source='sender.username', read_only=True)
     sender_picture = serializers.SerializerMethodField()
+    is_read = serializers.SerializerMethodField()
 
     class Meta:
         model = Message
-        fields = ['id', 'sender', 'sender_name', 'sender_picture', 'content', 'is_read', 'timestamp']
+        fields = ['id', 'sender', 'sender_name', 'sender_picture', 'content', 'status', 'is_read', 'timestamp']
         read_only_fields = ['sender', 'timestamp']
+
+    def get_is_read(self, obj):
+        return obj.status == 'read'
 
     def get_sender_picture(self, obj):
         request = self.context.get('request')
@@ -44,5 +48,5 @@ class ConversationSerializer(serializers.ModelSerializer):
         request = self.context.get('request')
         user    = request.user if request else None
         if user:
-            return obj.messages.filter(is_read=False).exclude(sender=user).count()
+            return obj.messages.exclude(status='read').exclude(sender=user).count()
         return 0
