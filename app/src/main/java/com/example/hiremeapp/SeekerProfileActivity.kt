@@ -66,7 +66,7 @@ class SeekerProfileActivity : AppCompatActivity() {
                         imgProfile.visibility = View.VISIBLE
                         tvInitials.visibility = View.GONE
                     } else {
-                        tvInitials.text = p.username.firstOrNull()?.uppercase() ?: "?"
+                        tvInitials.text = p.username?.firstOrNull()?.uppercase() ?: "?"
                         tvInitials.visibility = View.VISIBLE
                         imgProfile.visibility = View.GONE
                     }
