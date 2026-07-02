@@ -19,15 +19,6 @@ import retrofit2.http.*
 
 interface ApiService {
 
-    @POST("api/users/forgot-password/")
-    fun forgotPassword(@Body data: Map<String, String>): Call<Map<String, String>>
-
-    @POST("api/users/verify-reset-code/")
-    fun verifyResetCode(@Body data: Map<String, String>): Call<Map<String, String>>
-
-    @POST("api/users/reset-password/")
-    fun resetPassword(@Body data: Map<String, String>): Call<Map<String, String>>
-
     @POST("api/users/register/")
     fun registerUser(@Body user: UserRegisterRequest): Call<Map<String, String>>
 
@@ -42,6 +33,12 @@ interface ApiService {
         @Header("Authorization") token: String,
         @Body data: Map<String, String>
     ): Call<UserProfile>
+
+    @POST("api/ratings/rate/")
+    fun rateSeeker(
+        @Header("Authorization") token: String,
+        @Body data: Map<String, @JvmSuppressWildcards Any>
+    ): Call<Map<String, Any>>
 
     @GET("api/users/{id}/")
     fun getUserById(
@@ -133,11 +130,6 @@ interface ApiService {
         @Header("Authorization") token: String
     ): Call<List<Notification>>
 
-    @POST("api/notifications/mark-all-read/")
-    fun markAllRead(
-        @Header("Authorization") token: String
-    ): Call<Map<String, String>>
-
     @GET("api/notifications/unread-count/")
     fun getUnreadCount(
         @Header("Authorization") token: String
@@ -148,11 +140,10 @@ interface ApiService {
         @Header("Authorization") token: String
     ): Call<List<UserProfile>>
 
-    // Conversations
     @GET("api/messages/")
-    fun getConversations(
+    suspend fun getConversations(
         @Header("Authorization") token: String
-    ): Call<List<Conversation>>
+    ): Response<List<Conversation>>
 
     @POST("api/messages/start/")
     fun startConversation(
@@ -160,34 +151,18 @@ interface ApiService {
         @Body data: Map<String, Int>
     ): Call<Conversation>
 
-    // Messages in conversation
     @GET("api/messages/{id}/messages/")
-    fun getMessages(
+    suspend fun getMessages(
         @Header("Authorization") token: String,
         @Path("id") conversationId: Int
-    ): Call<List<Message>>
+    ): Response<List<Message>>
 
-    // SEND MESSAGE (FIXED - IMPORTANT)
-    @POST("api/messages/send/")
-    fun sendMessage(
+    @GET("api/messages/chat/{user_id}/")
+    fun getChatMessages(
         @Header("Authorization") token: String,
-        @Body data: Map<String, Any>
-    ): Call<Message>
+        @Path("user_id") userId: Int
+    ): Call<List<ChatMessage>>
 
-    // MARK AS READ (✓✓ BLUE)
-    @POST("api/messages/{id}/read/")
-    fun markAsRead(
-        @Header("Authorization") token: String,
-        @Path("id") messageId: Int
-    ): Call<Map<String, String>>
-
-    // Notifications (keep)
-    @GET("api/messages/unread-count/")
-    fun getUnreadMessagesCount(
-        @Header("Authorization") token: String
-    ): Call<Map<String, Int>>
-
-    // Portfolio
     @GET("api/portfolio/{user_id}/")
     fun getPortfolio(
         @Header("Authorization") token: String,

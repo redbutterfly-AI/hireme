@@ -25,7 +25,7 @@ class UserSerializer(serializers.ModelSerializer):
             'id', 'username', 'email', 'phone', 'role', 'gender',
             'average_rating', 'is_verified', 'cv', 'cv_filename',
             'profile_picture', 'profile_picture_url',
-            'bio', 'location'
+            'bio', 'company_name', 'location'
         ]
 
     def get_profile_picture_url(self, obj):

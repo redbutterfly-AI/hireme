@@ -25,6 +25,7 @@ INSTALLED_APPS = [
     'applications',
     'messaging',
     'notifications',
+    'portfolio',
     'ratings',
     'reports',
 ]
@@ -116,3 +117,4 @@ EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'hiremethoko@gmail.com'
 EMAIL_HOST_PASSWORD = 'eprq fryd cnwb fsli'
 DEFAULT_FROM_EMAIL = 'HireMe <hiremethoko@gmail.com>'
+

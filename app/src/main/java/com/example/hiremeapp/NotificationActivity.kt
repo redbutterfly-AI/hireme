@@ -3,6 +3,7 @@ package com.example.hiremeapp
 import android.os.Bundle
 import android.view.View
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -30,17 +31,6 @@ class NotificationActivity : AppCompatActivity() {
             return
         }
 
-        loadNotifications(token, recycler, tvEmpty)
-
-        // Mark all as read since user is now viewing them
-        RetrofitClient.instance.markAllRead("Bearer $token")
-            .enqueue(object : Callback<Map<String, String>> {
-                override fun onResponse(call: Call<Map<String, String>>, response: Response<Map<String, String>>) {}
-                override fun onFailure(call: Call<Map<String, String>>, t: Throwable) {}
-            })
-    }
-
-    private fun loadNotifications(token: String, recycler: RecyclerView, tvEmpty: TextView) {
         RetrofitClient.instance.getNotifications("Bearer $token")
             .enqueue(object : Callback<List<Notification>> {
                 override fun onResponse(
