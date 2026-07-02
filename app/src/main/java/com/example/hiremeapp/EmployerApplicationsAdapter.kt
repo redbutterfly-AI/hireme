@@ -13,7 +13,7 @@ class EmployerApplicationsAdapter(
     private val onAccept: (Application) -> Unit,
     private val onReject: (Application) -> Unit,
     private val onChat: (Application) -> Unit,
-    private val onViewCV: (Application) -> Unit
+    private val onViewProfile: (Application) -> Unit
 ) : RecyclerView.Adapter<EmployerApplicationsAdapter.AppViewHolder>() {
 
     class AppViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -21,7 +21,7 @@ class EmployerApplicationsAdapter(
         val tvJobTitle: TextView = itemView.findViewById(R.id.tvJobTitle)
         val tvStatus: TextView = itemView.findViewById(R.id.tvStatus)
         val btnChat: Button = itemView.findViewById(R.id.btnChat)
-        val btnViewCV: Button = itemView.findViewById(R.id.btnViewCV)
+        val btnViewProfile: Button = itemView.findViewById(R.id.btnViewCV)
         val btnAccept: Button = itemView.findViewById(R.id.btnAccept)
         val btnReject: Button = itemView.findViewById(R.id.btnReject)
     }
@@ -49,7 +49,7 @@ class EmployerApplicationsAdapter(
         holder.btnAccept.setOnClickListener { onAccept(app) }
         holder.btnReject.setOnClickListener { onReject(app) }
         holder.btnChat.setOnClickListener { onChat(app) }
-        holder.btnViewCV.setOnClickListener { onViewCV(app) }
+        holder.btnViewProfile.setOnClickListener { onViewProfile(app) }
     }
 
     override fun getItemCount(): Int = applications.size

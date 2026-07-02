@@ -44,6 +44,7 @@
         <activity android:name=".SeekersActivity"           android:exported="false" />
         <activity android:name=".MyApplicationsActivity"    android:exported="false" />
         <activity android:name=".ForgotPasswordActivity"     android:exported="false" />
+        <activity android:name=".SeekerProfileActivity"      android:exported="false" />
         <activity android:name=".OTPVerificationActivity"   android:exported="false" />
 
         <provider

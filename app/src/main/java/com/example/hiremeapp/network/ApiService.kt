@@ -37,6 +37,12 @@ interface ApiService {
     @GET("api/users/profile/")
     fun getProfile(@Header("Authorization") token: String): Call<UserProfile>
 
+    @PATCH("api/users/profile/update/")
+    fun updateProfile(
+        @Header("Authorization") token: String,
+        @Body data: Map<String, String>
+    ): Call<UserProfile>
+
     @GET("api/users/{id}/")
     fun getUserById(
         @Header("Authorization") token: String,
@@ -180,4 +186,38 @@ interface ApiService {
     fun getUnreadMessagesCount(
         @Header("Authorization") token: String
     ): Call<Map<String, Int>>
+
+    // Portfolio
+    @GET("api/portfolio/{user_id}/")
+    fun getPortfolio(
+        @Header("Authorization") token: String,
+        @Path("user_id") userId: Int
+    ): Call<List<com.example.hiremeapp.models.PortfolioItem>>
+
+    @Multipart
+    @POST("api/portfolio/upload/")
+    fun uploadPortfolio(
+        @Header("Authorization") token: String,
+        @Part image: MultipartBody.Part,
+        @Part("caption") caption: okhttp3.RequestBody
+    ): Call<com.example.hiremeapp.models.PortfolioItem>
+
+    @DELETE("api/portfolio/{item_id}/delete/")
+    fun deletePortfolio(
+        @Header("Authorization") token: String,
+        @Path("item_id") itemId: Int
+    ): Call<Map<String, String>>
+
+    @POST("api/portfolio/{item_id}/like/")
+    fun toggleLike(
+        @Header("Authorization") token: String,
+        @Path("item_id") itemId: Int
+    ): Call<com.example.hiremeapp.models.LikeResponse>
+
+    @POST("api/portfolio/{item_id}/comment/")
+    fun addComment(
+        @Header("Authorization") token: String,
+        @Path("item_id") itemId: Int,
+        @Body data: Map<String, String>
+    ): Call<com.example.hiremeapp.models.PortfolioComment>
 }

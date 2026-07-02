@@ -104,7 +104,7 @@ class EmployerDashboardActivity : AppCompatActivity() {
                             onAccept = { app -> updateApplicationStatus(app.id, "accepted") },
                             onReject = { app -> updateApplicationStatus(app.id, "rejected") },
                             onChat   = { app -> openChat(app) },
-                            onViewCV = { app -> viewCV(app) }
+                            onViewProfile = { app -> viewProfile(app) }
                         )
                     }
                 }
@@ -155,9 +155,9 @@ class EmployerDashboardActivity : AppCompatActivity() {
         })
     }
 
-    private fun viewCV(application: Application) {
-        startActivity(Intent(this, ProfileActivity::class.java).apply {
-            putExtra("view_other_id", application.applicant)
+    private fun viewProfile(application: Application) {
+        startActivity(Intent(this, SeekerProfileActivity::class.java).apply {
+            putExtra("seeker_id", application.applicant)
         })
     }
 
