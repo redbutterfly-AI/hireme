@@ -23,9 +23,9 @@ class UserSerializer(serializers.ModelSerializer):
         model = User
         fields = [
             'id', 'username', 'email', 'phone', 'role', 'gender',
-            'average_rating', 'is_verified', 'cv', 'cv_filename',
+            'average_rating', 'is_verified',
             'profile_picture', 'profile_picture_url',
-            'bio', 'company_name', 'location'
+            'bio', 'location'
         ]
 
     def get_profile_picture_url(self, obj):
@@ -33,8 +33,3 @@ class UserSerializer(serializers.ModelSerializer):
         if obj.profile_picture and request:
             return request.build_absolute_uri(obj.profile_picture.url)
         return None
-
-class CVUploadSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = User
-        fields = ['cv', 'cv_filename']

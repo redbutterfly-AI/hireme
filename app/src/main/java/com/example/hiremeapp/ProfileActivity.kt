@@ -75,6 +75,7 @@ class ProfileActivity : AppCompatActivity() {
         val cardCV       = findViewById<View>(R.id.cardCV)
         val rvPortfolio  = findViewById<RecyclerView>(R.id.recyclerPortfolio)
         val btnAddPortfolio = findViewById<Button>(R.id.btnUploadPortfolio)
+        val btnRateUser  = findViewById<Button>(R.id.btnRateUser)
 
         portfolioAdapter = PortfolioViewAdapter(portfolioItems, currentToken)
         rvPortfolio.layoutManager = GridLayoutManager(this, 2)
@@ -162,6 +163,15 @@ class ProfileActivity : AppCompatActivity() {
                         btnUploadPhoto.visibility = View.GONE
                         btnEditBio.visibility = View.GONE
                         btnAddPortfolio.visibility = View.GONE
+
+                        // Show Rate button if viewer is employer and target is seeker
+                        val myRole = prefs.getString("role", "")
+                        if (myRole == "employer" && profile.role == "seeker") {
+                            btnRateUser.visibility = View.VISIBLE
+                            btnRateUser.setOnClickListener {
+                                showRatingDialog(profile.id)
+                            }
+                        }
                     }
                 }
             }
@@ -304,6 +314,49 @@ class ProfileActivity : AppCompatActivity() {
                 }
                 override fun onFailure(call: Call<Map<String, String>>, t: Throwable) {
                     Toast.makeText(this@ProfileActivity, "${getString(R.string.error)}: ${t.message}", Toast.LENGTH_SHORT).show()
+                }
+            })
+    }
+
+    private fun showRatingDialog(seekerId: Int) {
+        val view = layoutInflater.inflate(R.layout.dialog_rate_seeker, null)
+        val rb = view.findViewById<RatingBar>(R.id.ratingBar)
+        val et = view.findViewById<EditText>(R.id.etReview)
+
+        AlertDialog.Builder(this)
+            .setTitle("Rate this Seeker")
+            .setView(view)
+            .setPositiveButton("Submit") { _, _ ->
+                val stars = rb.rating.toInt()
+                val review = et.text.toString().trim()
+                if (stars > 0) {
+                    submitRating(seekerId, stars, review)
+                } else {
+                    Toast.makeText(this, "Please select at least 1 star", Toast.LENGTH_SHORT).show()
+                }
+            }
+            .setNegativeButton("Cancel", null)
+            .show()
+    }
+
+    private fun submitRating(seekerId: Int, stars: Int, review: String) {
+        val data = mapOf(
+            "rated_user" to seekerId,
+            "stars" to stars,
+            "review" to review
+        )
+        RetrofitClient.instance.rateSeeker("Bearer $currentToken", data)
+            .enqueue(object : Callback<Map<String, Any>> {
+                override fun onResponse(call: Call<Map<String, Any>>, response: Response<Map<String, Any>>) {
+                    if (response.isSuccessful) {
+                        Toast.makeText(this@ProfileActivity, "Rating submitted!", Toast.LENGTH_SHORT).show()
+                        recreate()
+                    } else {
+                        Toast.makeText(this@ProfileActivity, "Failed to submit rating", Toast.LENGTH_SHORT).show()
+                    }
+                }
+                override fun onFailure(call: Call<Map<String, Any>>, t: Throwable) {
+                    Toast.makeText(this@ProfileActivity, "Error: ${t.message}", Toast.LENGTH_SHORT).show()
                 }
             })
     }

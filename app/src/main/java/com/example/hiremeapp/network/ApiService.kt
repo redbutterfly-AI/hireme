@@ -46,15 +46,6 @@ interface ApiService {
         @Path("id") userId: Int
     ): Call<UserProfile>
 
-    @Multipart
-    @POST("api/users/cv/upload/")
-    fun uploadCV(
-        @Header("Authorization") token: String,
-        @Part cv: MultipartBody.Part
-    ): Call<Map<String, String>>
-
-    @DELETE("api/users/cv/delete/")
-    fun deleteCV(@Header("Authorization") token: String): Call<Map<String, String>>
 
     @Multipart
     @POST("api/users/profile-picture/")
@@ -188,6 +179,26 @@ interface ApiService {
         @Header("Authorization") token: String,
         @Path("item_id") itemId: Int
     ): Call<com.example.hiremeapp.models.LikeResponse>
+
+    @GET("api/messages/unread-count/")
+    fun getUnreadMessagesCount(
+        @Header("Authorization") token: String
+    ): Call<Map<String, Int>>
+
+    @POST("api/users/forgot-password/")
+    fun forgotPassword(
+        @Body data: Map<String, String>
+    ): Call<Map<String, String>>
+
+    @POST("api/users/verify-reset-code/")
+    fun verifyResetCode(
+        @Body data: Map<String, String>
+    ): Call<Map<String, String>>
+
+    @POST("api/users/reset-password/")
+    fun resetPassword(
+        @Body data: Map<String, String>
+    ): Call<Map<String, String>>
 
     @POST("api/portfolio/{item_id}/comment/")
     fun addComment(

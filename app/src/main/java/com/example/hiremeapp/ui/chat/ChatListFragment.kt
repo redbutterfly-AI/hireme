@@ -40,7 +40,7 @@ class ChatListFragment : Fragment() {
 
         CoroutineScope(Dispatchers.IO).launch {
             try {
-                val response = RetrofitClient.instance.getConversations(token).execute()
+                val response = RetrofitClient.instance.getConversations(token)
                 withContext(Dispatchers.Main) {
                     if (response.isSuccessful) {
                         val conversations: List<Conversation> = response.body() ?: emptyList()

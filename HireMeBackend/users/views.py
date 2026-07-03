@@ -5,7 +5,7 @@ from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.auth import get_user_model, authenticate
 from django.core.mail import send_mail
-from .serializers import RegisterSerializer, UserSerializer, CVUploadSerializer
+from .serializers import RegisterSerializer, UserSerializer
 import random
 import os
 

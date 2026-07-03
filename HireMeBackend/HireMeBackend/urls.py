@@ -9,6 +9,6 @@ urlpatterns = [
                   path('api/applications/',    include('applications.urls')),
                   path('api/messages/',        include('messaging.urls')),
                   path('api/portfolio/', include('portfolio.urls')),
-    path('api/notifications/',   include('notifications.urls')),
+                  path('api/notifications/',   include('notifications.urls')),
                   path('api/ratings/',         include('ratings.urls')),
               ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

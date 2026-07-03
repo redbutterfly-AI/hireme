@@ -186,6 +186,16 @@
                     android:layout_height="wrap_content"/>
             </LinearLayout>
 
+            <Button
+                android:id="@+id/btnRateUser"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Rate this Seeker"
+                android:layout_marginTop="12dp"
+                android:backgroundTint="#FF9800"
+                android:textColor="@android:color/white"
+                android:visibility="gone"/>
+
         </LinearLayout>
 
         <!-- Skills & Bio Section (seeker only) -->

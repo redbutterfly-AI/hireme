@@ -25,8 +25,6 @@ class User(AbstractUser):
     is_verified    = models.BooleanField(default=False)
     otp            = models.CharField(max_length=6, blank=True)
     average_rating = models.FloatField(default=0.0)
-    cv             = models.FileField(upload_to='cvs/', blank=True, null=True)
-    cv_filename    = models.CharField(max_length=255, blank=True)
     profile_picture = models.ImageField(upload_to='profile_pictures/', blank=True, null=True)
     bio            = models.TextField(blank=True)
     location       = models.CharField(max_length=100, blank=True)

@@ -12,8 +12,6 @@ urlpatterns = [
     path('token/refresh/',         TokenRefreshView.as_view()),
     path('profile/',               views.my_profile),
     path('profile/update/',        views.update_profile),
-    path('cv/upload/',             views.upload_cv),
-    path('cv/delete/',             views.delete_cv),
     path('profile-picture/',       views.upload_profile_picture),
     path('employers/',             views.get_employers),
     path('seekers/',               views.get_seekers),

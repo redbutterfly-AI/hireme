@@ -11,8 +11,6 @@ data class UserProfile(
     val location: String? = null,
     val average_rating: Float = 0.0f,
     val is_verified: Boolean = false,
-    val cv: String? = null,
-    val cv_filename: String? = null,
     val profile_picture: String? = null,
     val profile_picture_url: String? = null
 )

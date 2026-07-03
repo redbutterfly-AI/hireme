@@ -118,7 +118,7 @@ class ChatActivity : AppCompatActivity() {
 
         CoroutineScope(Dispatchers.IO).launch {
             try {
-                val response = RetrofitClient.instance.getMessages(token, conversationId).execute()
+                val response = RetrofitClient.instance.getMessages(token, conversationId)
 
                 withContext(Dispatchers.Main) {
                     if (response.isSuccessful) {
