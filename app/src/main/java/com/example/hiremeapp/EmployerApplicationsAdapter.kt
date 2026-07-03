@@ -6,7 +6,6 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.hiremeapp.R
 import com.example.hiremeapp.models.Application
 
 class EmployerApplicationsAdapter(
@@ -14,7 +13,7 @@ class EmployerApplicationsAdapter(
     private val onAccept: (Application) -> Unit,
     private val onReject: (Application) -> Unit,
     private val onChat: (Application) -> Unit,
-    private val onViewProfile: (Application) -> Unit
+    private val onViewProfile: (Application) -> Unit,
 ) : RecyclerView.Adapter<EmployerApplicationsAdapter.AppViewHolder>() {
 
     class AppViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -22,7 +21,7 @@ class EmployerApplicationsAdapter(
         val tvJobTitle: TextView = itemView.findViewById(R.id.tvJobTitle)
         val tvStatus: TextView = itemView.findViewById(R.id.tvStatus)
         val btnChat: Button = itemView.findViewById(R.id.btnChat)
-        val btnViewProfile: Button = itemView.findViewById(R.id.btnViewCV)
+        val btnViewProfile: Button = itemView.findViewById(R.id.btnViewProfile)
         val btnAccept: Button = itemView.findViewById(R.id.btnAccept)
         val btnReject: Button = itemView.findViewById(R.id.btnReject)
     }
@@ -35,9 +34,9 @@ class EmployerApplicationsAdapter(
 
     override fun onBindViewHolder(holder: AppViewHolder, position: Int) {
         val app = applications[position]
-        holder.tvApplicantName.text = "Applicant: ${app.applicant_name ?: "Unknown"}"
-        holder.tvJobTitle.text = "Job: ${app.job_title ?: "N/A"}"
-        holder.tvStatus.text = "Status: ${app.status ?: "pending"}"
+        holder.tvApplicantName.text = holder.itemView.context.getString(R.string.applicant_label, app.applicant_name ?: "Unknown")
+        holder.tvJobTitle.text = holder.itemView.context.getString(R.string.job_label, app.job_title ?: "N/A")
+        holder.tvStatus.text = holder.itemView.context.getString(R.string.status_label, app.status ?: "pending")
 
         if (app.status == "pending") {
             holder.btnAccept.visibility = View.VISIBLE

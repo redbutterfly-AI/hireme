@@ -42,4 +42,7 @@
     <string name="rating">Rating</string>
     <string name="my_cv">My CV</string>
     <string name="logout">Logout</string>
+    <string name="applicant_label">Applicant: %1$s</string>
+    <string name="job_label">Job: %1$s</string>
+    <string name="status_label">Status: %1$s</string>
 </resources>

@@ -55,7 +55,7 @@
             android:layout_marginTop="12dp">
 
             <Button
-                android:id="@+id/btnViewCV"
+                android:id="@+id/btnViewProfile"
                 style="?attr/borderlessButtonStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
