@@ -94,6 +94,30 @@ def approve_job(request, pk):
     })
 
 
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def my_jobs(request):
+    jobs = Job.objects.filter(employer=request.user).order_by('-created_at')
+    serializer = JobSerializer(jobs, many=True, context={'request': request})
+    return Response(serializer.data)
+
+@api_view(['DELETE'])
+@permission_classes([IsAuthenticated])
+def delete_job(request, pk):
+    try:
+        job = Job.objects.get(id=pk, employer=request.user)
+    except Job.DoesNotExist:
+        return Response(
+            {"error": "Job not found."},
+            status=404
+        )
+
+    job.delete()
+
+    return Response({
+        "message": "Job deleted successfully."
+    })
+
 @api_view(['PATCH'])
 @permission_classes([IsAuthenticated])
 def reject_job(request, pk):

@@ -47,10 +47,18 @@ class JobDetailActivity : AppCompatActivity() {
 
         val btnApply = findViewById<Button>(R.id.btnApply)
         val btnChat  = findViewById<Button>(R.id.btnChat)
+        val btnDelete = findViewById<Button>(R.id.btnDeleteJob)
 
         if (userRole == "employer" || userRole == "admin") {
             btnApply.visibility = View.GONE
             btnChat.visibility  = View.GONE
+            
+            if (userRole == "employer") {
+                btnDelete.visibility = View.VISIBLE
+                btnDelete.setOnClickListener {
+                    deleteJob(jobId)
+                }
+            }
             return
         }
 
@@ -99,5 +107,32 @@ class JobDetailActivity : AppCompatActivity() {
             chatIntent.putExtra("OTHER_USER", employerName)
             startActivity(chatIntent)
         }
+    }
+
+    private fun deleteJob(jobId: Int) {
+        val token = getSharedPreferences("hireme", MODE_PRIVATE).getString("token", "") ?: ""
+        if (token.isEmpty()) return
+
+        androidx.appcompat.app.AlertDialog.Builder(this)
+            .setTitle("Delete Job")
+            .setMessage("Are you sure you want to delete this job?")
+            .setPositiveButton("Delete") { _, _ ->
+                RetrofitClient.instance.deleteJob("Bearer $token", jobId)
+                    .enqueue(object : Callback<Map<String, String>> {
+                        override fun onResponse(call: Call<Map<String, String>>, response: Response<Map<String, String>>) {
+                            if (response.isSuccessful) {
+                                Toast.makeText(this@JobDetailActivity, "Job deleted", Toast.LENGTH_SHORT).show()
+                                finish()
+                            } else {
+                                Toast.makeText(this@JobDetailActivity, "Failed to delete", Toast.LENGTH_SHORT).show()
+                            }
+                        }
+                        override fun onFailure(call: Call<Map<String, String>>, t: Throwable) {
+                            Toast.makeText(this@JobDetailActivity, "Error: ${t.message}", Toast.LENGTH_SHORT).show()
+                        }
+                    })
+            }
+            .setNegativeButton("Cancel", null)
+            .show()
     }
 }

@@ -8,4 +8,6 @@ urlpatterns = [
     path('pending/', views.PendingJobsView.as_view()),
     path('<int:pk>/approve/', views.approve_job),
     path('<int:pk>/reject/', views.reject_job),
+    path("my-jobs/", views.my_jobs),
+    path("delete/<int:pk>/", views.delete_job),
 ]

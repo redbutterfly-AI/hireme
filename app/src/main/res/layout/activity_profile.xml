@@ -196,6 +196,31 @@
                 android:textColor="@android:color/white"
                 android:visibility="gone"/>
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Reviews"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textColor="#333333"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="8dp"/>
+
+            <TextView
+                android:id="@+id/tvNoRatings"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="No reviews yet."
+                android:textSize="13sp"
+                android:textColor="#999999"
+                android:visibility="gone"/>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerRatings"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:nestedScrollingEnabled="false"/>
+
         </LinearLayout>
 
         <!-- Skills & Bio Section (seeker only) -->

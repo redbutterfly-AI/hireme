@@ -110,6 +110,17 @@
                 style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                 xmlns:app="http://schemas.android.com/apk/res-auto"/>
 
+            <Button
+                android:id="@+id/btnDeleteJob"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:text="Delete Job"
+                android:textSize="16sp"
+                android:backgroundTint="#D32F2F"
+                android:textColor="@android:color/white"
+                android:layout_marginTop="12dp"
+                android:visibility="gone"/>
+
         </LinearLayout>
 
     </LinearLayout>

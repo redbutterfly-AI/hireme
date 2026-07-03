@@ -34,18 +34,21 @@ interface ApiService {
         @Body data: Map<String, String>
     ): Call<UserProfile>
 
-    @POST("api/ratings/rate/")
-    fun rateSeeker(
-        @Header("Authorization") token: String,
-        @Body data: Map<String, @JvmSuppressWildcards Any>
-    ): Call<Map<String, Any>>
-
     @GET("api/users/{id}/")
     fun getUserById(
         @Header("Authorization") token: String,
         @Path("id") userId: Int
     ): Call<UserProfile>
 
+    @Multipart
+    @POST("api/users/cv/upload/")
+    fun uploadCV(
+        @Header("Authorization") token: String,
+        @Part cv: MultipartBody.Part
+    ): Call<Map<String, String>>
+
+    @DELETE("api/users/cv/delete/")
+    fun deleteCV(@Header("Authorization") token: String): Call<Map<String, String>>
 
     @Multipart
     @POST("api/users/profile-picture/")
@@ -56,6 +59,9 @@ interface ApiService {
 
     @GET("api/users/employers/")
     fun getEmployers(@Header("Authorization") token: String): Call<List<Employer>>
+
+    @GET("api/users/seekers/")
+    fun getSeekers(@Header("Authorization") token: String): Call<List<UserProfile>>
 
     @GET("api/jobs/")
     fun getJobs(
@@ -69,6 +75,18 @@ interface ApiService {
     @GET("api/jobs/my-jobs/")
     fun getMyJobs(@Header("Authorization") token: String): Call<List<Job>>
 
+    @POST("api/jobs/create/")
+    fun postJob(
+        @Header("Authorization") token: String,
+        @Body job: PostJobRequest
+    ): Call<Job>
+
+    @DELETE("api/jobs/delete/{id}/")
+    fun deleteJob(
+        @Header("Authorization") token: String,
+        @Path("id") id: Int
+    ): Call<Map<String, String>>
+
     @PATCH("api/jobs/{id}/approve/")
     fun approveJob(
         @Header("Authorization") token: String,
@@ -81,12 +99,6 @@ interface ApiService {
         @Path("id") jobId: Int
     ): Call<Map<String, String>>
 
-    @POST("api/jobs/create/")
-    fun postJob(
-        @Header("Authorization") token: String,
-        @Body job: PostJobRequest
-    ): Call<Job>
-
     @POST("api/applications/apply/")
     fun applyJob(
         @Header("Authorization") token: String,
@@ -94,9 +106,7 @@ interface ApiService {
     ): Call<Map<String, String>>
 
     @GET("api/applications/mine/")
-    fun getMyApplications(
-        @Header("Authorization") token: String
-    ): Call<List<Application>>
+    fun getMyApplications(@Header("Authorization") token: String): Call<List<Application>>
 
     @GET("api/applications/job/{job_id}/")
     fun getJobApplications(
@@ -105,9 +115,7 @@ interface ApiService {
     ): Call<List<Application>>
 
     @GET("api/applications/my-jobs/")
-    fun getMyJobApplications(
-        @Header("Authorization") token: String
-    ): Call<List<Application>>
+    fun getMyJobApplications(@Header("Authorization") token: String): Call<List<Application>>
 
     @PATCH("api/applications/{id}/status/")
     fun updateApplicationStatus(
@@ -117,24 +125,13 @@ interface ApiService {
     ): Call<Map<String, String>>
 
     @GET("api/notifications/")
-    fun getNotifications(
-        @Header("Authorization") token: String
-    ): Call<List<Notification>>
+    fun getNotifications(@Header("Authorization") token: String): Call<List<Notification>>
 
     @GET("api/notifications/unread-count/")
-    fun getUnreadCount(
-        @Header("Authorization") token: String
-    ): Call<Map<String, Int>>
-
-    @GET("api/users/seekers/")
-    fun getSeekers(
-        @Header("Authorization") token: String
-    ): Call<List<UserProfile>>
+    fun getUnreadCount(@Header("Authorization") token: String): Call<Map<String, Int>>
 
     @GET("api/messages/")
-    suspend fun getConversations(
-        @Header("Authorization") token: String
-    ): Response<List<Conversation>>
+    suspend fun getConversations(@Header("Authorization") token: String): Response<List<Conversation>>
 
     @POST("api/messages/start/")
     fun startConversation(
@@ -153,6 +150,9 @@ interface ApiService {
         @Header("Authorization") token: String,
         @Path("user_id") userId: Int
     ): Call<List<ChatMessage>>
+
+    @GET("api/messages/unread-count/")
+    fun getUnreadMessagesCount(@Header("Authorization") token: String): Call<Map<String, Int>>
 
     @GET("api/portfolio/{user_id}/")
     fun getPortfolio(
@@ -180,30 +180,31 @@ interface ApiService {
         @Path("item_id") itemId: Int
     ): Call<com.example.hiremeapp.models.LikeResponse>
 
-    @GET("api/messages/unread-count/")
-    fun getUnreadMessagesCount(
-        @Header("Authorization") token: String
-    ): Call<Map<String, Int>>
-
-    @POST("api/users/forgot-password/")
-    fun forgotPassword(
-        @Body data: Map<String, String>
-    ): Call<Map<String, String>>
-
-    @POST("api/users/verify-reset-code/")
-    fun verifyResetCode(
-        @Body data: Map<String, String>
-    ): Call<Map<String, String>>
-
-    @POST("api/users/reset-password/")
-    fun resetPassword(
-        @Body data: Map<String, String>
-    ): Call<Map<String, String>>
-
     @POST("api/portfolio/{item_id}/comment/")
     fun addComment(
         @Header("Authorization") token: String,
         @Path("item_id") itemId: Int,
         @Body data: Map<String, String>
     ): Call<com.example.hiremeapp.models.PortfolioComment>
+
+    @GET("api/ratings/seeker/{user_id}/")
+    fun getSeekerRatings(
+        @Header("Authorization") token: String,
+        @Path("user_id") userId: Int
+    ): Call<List<com.example.hiremeapp.models.RatingItem>>
+
+    @POST("api/ratings/rate/")
+    fun rateSeeker(
+        @Header("Authorization") token: String,
+        @Body data: Map<String, @JvmSuppressWildcards Any>
+    ): Call<Map<String, Any>>
+
+    @POST("api/users/forgot-password/")
+    fun forgotPassword(@Body data: Map<String, String>): Call<Map<String, String>>
+
+    @POST("api/users/verify-reset-code/")
+    fun verifyResetCode(@Body data: Map<String, String>): Call<Map<String, String>>
+
+    @POST("api/users/reset-password/")
+    fun resetPassword(@Body data: Map<String, String>): Call<Map<String, String>>
 }

@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.edit
 import androidx.core.graphics.toColorInt
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.hiremeapp.models.PortfolioItem
@@ -76,6 +77,8 @@ class ProfileActivity : AppCompatActivity() {
         val rvPortfolio  = findViewById<RecyclerView>(R.id.recyclerPortfolio)
         val btnAddPortfolio = findViewById<Button>(R.id.btnUploadPortfolio)
         val btnRateUser  = findViewById<Button>(R.id.btnRateUser)
+        val recyclerRatings = findViewById<RecyclerView>(R.id.recyclerRatings)
+        val tvNoRatings = findViewById<TextView>(R.id.tvNoRatings)
 
         portfolioAdapter = PortfolioViewAdapter(portfolioItems, currentToken)
         rvPortfolio.layoutManager = GridLayoutManager(this, 2)
@@ -146,6 +149,7 @@ class ProfileActivity : AppCompatActivity() {
                         }
 
                         loadPortfolio(profile.id)
+                        loadRatings(profile.id, recyclerRatings, tvNoRatings)
                     } else {
                         cardCV.visibility    = View.GONE
                         rowRating.visibility = View.GONE
@@ -213,6 +217,30 @@ class ProfileActivity : AppCompatActivity() {
                     }
                 }
                 override fun onFailure(call: Call<List<PortfolioItem>>, t: Throwable) {}
+            })
+    }
+
+    private fun loadRatings(userId: Int, recyclerView: RecyclerView, tvEmpty: TextView) {
+        recyclerView.layoutManager = LinearLayoutManager(this)
+        RetrofitClient.instance.getSeekerRatings("Bearer $currentToken", userId)
+            .enqueue(object : Callback<List<com.example.hiremeapp.models.RatingItem>> {
+                override fun onResponse(
+                    call: Call<List<com.example.hiremeapp.models.RatingItem>>,
+                    response: Response<List<com.example.hiremeapp.models.RatingItem>>
+                ) {
+                    if (response.isSuccessful) {
+                        val ratings = response.body() ?: emptyList()
+                        if (ratings.isEmpty()) {
+                            tvEmpty.visibility = View.VISIBLE
+                            recyclerView.visibility = View.GONE
+                        } else {
+                            tvEmpty.visibility = View.GONE
+                            recyclerView.visibility = View.VISIBLE
+                            recyclerView.adapter = RatingAdapter(ratings)
+                        }
+                    }
+                }
+                override fun onFailure(call: Call<List<com.example.hiremeapp.models.RatingItem>>, t: Throwable) {}
             })
     }
 
