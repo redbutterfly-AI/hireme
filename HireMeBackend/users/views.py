@@ -155,45 +155,6 @@ def update_profile(request):
     return Response(serializer.data)
 
 
-@api_view(['POST'])
-@permission_classes([IsAuthenticated])
-@parser_classes([MultiPartParser, FormParser])
-def upload_cv(request):
-    user = request.user
-    if 'cv' not in request.FILES:
-        return Response({'error': 'No file provided.'}, status=400)
-    cv_file = request.FILES['cv']
-    if not cv_file.name.endswith('.pdf'):
-        return Response({'error': 'Only PDF files are allowed.'}, status=400)
-    if cv_file.size > 5 * 1024 * 1024:
-        return Response({'error': 'File too large. Max size is 5MB.'}, status=400)
-    if user.cv:
-        if os.path.isfile(user.cv.path):
-            os.remove(user.cv.path)
-    user.cv          = cv_file
-    user.cv_filename = cv_file.name
-    user.save()
-    return Response({
-        'message':     'CV uploaded successfully.',
-        'cv_filename': user.cv_filename,
-        'cv_url':      request.build_absolute_uri(user.cv.url)
-    })
-
-
-@api_view(['DELETE'])
-@permission_classes([IsAuthenticated])
-def delete_cv(request):
-    user = request.user
-    if not user.cv:
-        return Response({'error': 'No CV found.'}, status=404)
-    if os.path.isfile(user.cv.path):
-        os.remove(user.cv.path)
-    user.cv          = None
-    user.cv_filename = ''
-    user.save()
-    return Response({'message': 'CV deleted successfully.'})
-
-
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def get_user_by_id(request, pk):

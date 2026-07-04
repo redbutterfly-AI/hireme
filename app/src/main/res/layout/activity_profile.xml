@@ -225,7 +225,7 @@
 
         <!-- Skills & Bio Section (seeker only) -->
         <LinearLayout
-            android:id="@+id/cardCV"
+            android:id="@+id/cardSkills"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
@@ -243,7 +243,7 @@
                 android:layout_marginBottom="12dp"/>
 
             <TextView
-                android:id="@+id/tvCVStatus"
+                android:id="@+id/tvSkillsBio"
                 android:text="Tell employers what you can do..."
                 android:textSize="14sp"
                 android:textColor="#333333"
@@ -253,7 +253,7 @@
                 android:layout_marginBottom="12dp"/>
 
             <Button
-                android:id="@+id/btnUploadCV"
+                android:id="@+id/btnEditSkills"
                 android:text="Edit Skills Bio"
                 android:textSize="14sp"
                 android:backgroundTint="#1976D2"

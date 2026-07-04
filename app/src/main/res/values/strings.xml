@@ -23,10 +23,6 @@
     <string name="not_set">Not set</string>
     <string name="rating_out_of">/ 5.0</string>
     <string name="no_ratings">No ratings yet</string>
-    <string name="cv_uploaded">✓ </string>
-    <string name="no_cv">No CV uploaded yet</string>
-    <string name="upload_cv">Upload CV</string>
-    <string name="update_cv">Update CV</string>
     <string name="connection_error">Cannot connect</string>
     <string name="logged_out">Logged out</string>
     <string name="profile_pic_uploaded">Profile picture uploaded</string>
@@ -40,7 +36,6 @@
     <string name="email">Email</string>
     <string name="phone">Phone</string>
     <string name="rating">Rating</string>
-    <string name="my_cv">My CV</string>
     <string name="logout">Logout</string>
     <string name="applicant_label">Applicant: %1$s</string>
     <string name="job_label">Job: %1$s</string>

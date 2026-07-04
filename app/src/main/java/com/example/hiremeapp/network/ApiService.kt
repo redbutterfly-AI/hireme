@@ -41,16 +41,6 @@ interface ApiService {
     ): Call<UserProfile>
 
     @Multipart
-    @POST("api/users/cv/upload/")
-    fun uploadCV(
-        @Header("Authorization") token: String,
-        @Part cv: MultipartBody.Part
-    ): Call<Map<String, String>>
-
-    @DELETE("api/users/cv/delete/")
-    fun deleteCV(@Header("Authorization") token: String): Call<Map<String, String>>
-
-    @Multipart
     @POST("api/users/profile-picture/")
     fun uploadProfilePicture(
         @Header("Authorization") token: String,

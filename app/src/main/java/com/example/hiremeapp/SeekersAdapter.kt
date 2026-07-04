@@ -18,7 +18,7 @@ class SeekersAdapter(
         val tvName: TextView = itemView.findViewById(R.id.tvSeekerName)
         val tvEmail: TextView = itemView.findViewById(R.id.tvSeekerEmail)
         val tvRating: TextView = itemView.findViewById(R.id.tvSeekerRating)
-        val btnViewProfile: Button = itemView.findViewById(R.id.btnViewCV)
+        val btnViewProfile: Button = itemView.findViewById(R.id.btnViewProfile)
         val btnChat: Button = itemView.findViewById(R.id.btnChat)
     }
 

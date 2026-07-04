@@ -68,12 +68,12 @@ class ProfileActivity : AppCompatActivity() {
         val tvRating     = findViewById<TextView>(R.id.tvProfileRating)
         val rowRating    = findViewById<View>(R.id.rowRating)
         val tvVerified   = findViewById<TextView>(R.id.tvVerified)
-        val tvBio        = findViewById<TextView>(R.id.tvCVStatus)
+        val tvBio        = findViewById<TextView>(R.id.tvSkillsBio)
         val imgProfile   = findViewById<ImageView>(R.id.imgProfile)
-        val btnEditBio   = findViewById<Button>(R.id.btnUploadCV)
+        val btnEditBio   = findViewById<Button>(R.id.btnEditSkills)
         val btnUploadPhoto = findViewById<Button>(R.id.btnUploadPhoto)
         val btnLogout    = findViewById<Button>(R.id.btnProfileLogout)
-        val cardCV       = findViewById<View>(R.id.cardCV)
+        val cardSkills   = findViewById<View>(R.id.cardSkills)
         val rvPortfolio  = findViewById<RecyclerView>(R.id.recyclerPortfolio)
         val btnAddPortfolio = findViewById<Button>(R.id.btnUploadPortfolio)
         val btnRateUser  = findViewById<Button>(R.id.btnRateUser)
@@ -135,7 +135,7 @@ class ProfileActivity : AppCompatActivity() {
                     if (profile.is_verified) tvVerified.visibility = View.VISIBLE
 
                     if (profile.role == "seeker") {
-                        cardCV.visibility    = View.VISIBLE
+                        cardSkills.visibility    = View.VISIBLE
                         rowRating.visibility = View.VISIBLE
 
                         tvRating.text = if (profile.average_rating > 0)
@@ -151,7 +151,7 @@ class ProfileActivity : AppCompatActivity() {
                         loadPortfolio(profile.id)
                         loadRatings(profile.id, recyclerRatings, tvNoRatings)
                     } else {
-                        cardCV.visibility    = View.GONE
+                        cardSkills.visibility    = View.GONE
                         rowRating.visibility = View.GONE
                     }
 
