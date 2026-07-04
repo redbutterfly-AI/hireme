@@ -204,6 +204,18 @@ class ChatActivity : AppCompatActivity() {
                 )
 
                 runOnUiThread {
+                    if (msg.sender == myUserId) {
+                        // This is the server confirming a message we already added locally.
+                        // Replace the temporary placeholder instead of adding a duplicate.
+                        val tempIndex = messages.indexOfLast {
+                            it.id == -1 && it.sender == myUserId && it.content == msg.content
+                        }
+                        if (tempIndex != -1) {
+                            messages[tempIndex] = msg
+                            adapter.notifyItemChanged(tempIndex)
+                            return@runOnUiThread
+                        }
+                    }
                     messages.add(msg)
                     adapter.notifyItemInserted(messages.size - 1)
                     recyclerView.scrollToPosition(messages.size - 1)
