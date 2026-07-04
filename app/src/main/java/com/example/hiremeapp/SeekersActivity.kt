@@ -1,7 +1,6 @@
 package com.example.hiremeapp
 
 import com.example.hiremeapp.ui.chat.ChatActivity
-
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
@@ -21,15 +20,10 @@ class SeekersActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_seekers)
-
         recyclerView = findViewById(R.id.recyclerSeekers)
         recyclerView.layoutManager = LinearLayoutManager(this)
-
         val token = getSharedPreferences("hireme", MODE_PRIVATE).getString("token", "") ?: ""
-
-        if (token.isNotEmpty()) {
-            fetchSeekers(token)
-        }
+        if (token.isNotEmpty()) fetchSeekers(token)
     }
 
     private fun fetchSeekers(token: String) {
@@ -38,22 +32,22 @@ class SeekersActivity : AppCompatActivity() {
                 override fun onResponse(call: Call<List<UserProfile>>, response: Response<List<UserProfile>>) {
                     if (response.isSuccessful) {
                         val seekers = response.body() ?: emptyList()
-                        recyclerView.adapter = SeekersAdapter(seekers,
-                            onViewCV = { seeker ->
-                                val i = Intent(this@SeekersActivity, ProfileActivity::class.java)
-                                i.putExtra("view_other_id", seeker.id)
-                                startActivity(i)
+                        recyclerView.adapter = SeekersAdapter(
+                            seekers,
+                            onViewProfile = { seeker ->
+                                startActivity(Intent(this@SeekersActivity, ProfileActivity::class.java).apply {
+                                    putExtra("view_other_id", seeker.id)
+                                })
                             },
                             onChat = { seeker ->
-                                val i = Intent(this@SeekersActivity, ChatActivity::class.java)
-                                i.putExtra("RECEIVER_ID", seeker.id)
-                                i.putExtra("OTHER_USER", seeker.username)
-                                startActivity(i)
+                                startActivity(Intent(this@SeekersActivity, ChatActivity::class.java).apply {
+                                    putExtra("RECEIVER_ID", seeker.id)
+                                    putExtra("OTHER_USER", seeker.username)
+                                })
                             }
                         )
                     }
                 }
-
                 override fun onFailure(call: Call<List<UserProfile>>, t: Throwable) {
                     Toast.makeText(this@SeekersActivity, "Error: ${t.message}", Toast.LENGTH_SHORT).show()
                 }

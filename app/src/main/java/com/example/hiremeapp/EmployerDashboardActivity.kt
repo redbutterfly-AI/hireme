@@ -35,7 +35,12 @@ class EmployerDashboardActivity : AppCompatActivity() {
         recyclerView.layoutManager = LinearLayoutManager(this)
 
         findViewById<ImageButton>(R.id.btnNotifications).setOnClickListener {
+            findViewById<TextView>(R.id.tvUnreadCount).visibility = android.view.View.GONE
             startActivity(Intent(this, NotificationActivity::class.java))
+        }
+        findViewById<ImageButton>(R.id.btnChat).setOnClickListener {
+            findViewById<TextView>(R.id.tvChatUnreadCount).visibility = android.view.View.GONE
+            startActivity(Intent(this, ChatListActivity::class.java))
         }
         findViewById<Button>(R.id.btnPostJob).setOnClickListener {
             startActivity(Intent(this, PostJobActivity::class.java))
@@ -61,6 +66,8 @@ class EmployerDashboardActivity : AppCompatActivity() {
         if (token.isNotEmpty()) {
             loadEmployerProfile()
             fetchMyJobApplications()
+            fetchUnreadMessagesCount(token)
+            fetchUnreadCount(token)
         }
     }
 
@@ -69,6 +76,8 @@ class EmployerDashboardActivity : AppCompatActivity() {
         if (token.isNotEmpty()) {
             loadEmployerProfile()
             fetchMyJobApplications()
+            fetchUnreadMessagesCount(token)
+            fetchUnreadCount(token)
         }
     }
 
@@ -156,8 +165,8 @@ class EmployerDashboardActivity : AppCompatActivity() {
     }
 
     private fun viewProfile(application: Application) {
-        startActivity(Intent(this, SeekerProfileActivity::class.java).apply {
-            putExtra("seeker_id", application.applicant)
+        startActivity(Intent(this, ProfileActivity::class.java).apply {
+            putExtra("view_other_id", application.applicant)
         })
     }
 
@@ -167,5 +176,43 @@ class EmployerDashboardActivity : AppCompatActivity() {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         })
         finish()
+    }
+
+    private fun fetchUnreadMessagesCount(token: String) {
+        RetrofitClient.instance.getUnreadMessagesCount("Bearer $token")
+            .enqueue(object : Callback<Map<String, Int>> {
+                override fun onResponse(call: Call<Map<String, Int>>, response: Response<Map<String, Int>>) {
+                    if (response.isSuccessful) {
+                        val count = response.body()?.get("unread_count") ?: 0
+                        val badge = findViewById<TextView>(R.id.tvChatUnreadCount)
+                        if (count > 0) {
+                            badge.text = if (count > 9) "9+" else count.toString()
+                            badge.visibility = android.view.View.VISIBLE
+                        } else {
+                            badge.visibility = android.view.View.GONE
+                        }
+                    }
+                }
+                override fun onFailure(call: Call<Map<String, Int>>, t: Throwable) {}
+            })
+    }
+
+    private fun fetchUnreadCount(token: String) {
+        RetrofitClient.instance.getUnreadCount("Bearer $token")
+            .enqueue(object : Callback<Map<String, Int>> {
+                override fun onResponse(call: Call<Map<String, Int>>, response: Response<Map<String, Int>>) {
+                    if (response.isSuccessful) {
+                        val count = response.body()?.get("unread_count") ?: 0
+                        val badge = findViewById<TextView>(R.id.tvUnreadCount)
+                        if (count > 0) {
+                            badge.text = if (count > 9) "9+" else count.toString()
+                            badge.visibility = android.view.View.VISIBLE
+                        } else {
+                            badge.visibility = android.view.View.GONE
+                        }
+                    }
+                }
+                override fun onFailure(call: Call<Map<String, Int>>, t: Throwable) {}
+            })
     }
 }

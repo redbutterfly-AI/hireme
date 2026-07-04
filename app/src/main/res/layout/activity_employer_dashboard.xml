@@ -25,14 +25,58 @@
                 android:layout_width="wrap_content" android:layout_height="wrap_content"/>
         </LinearLayout>
 
-        <ImageButton
-            android:id="@+id/btnNotifications"
-            android:layout_width="38dp"
-            android:layout_height="38dp"
-            android:src="@android:drawable/ic_popup_reminder"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:tint="@android:color/white"
-            android:contentDescription="Notifications"/>
+        <FrameLayout
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginEnd="4dp">
+
+            <ImageButton
+                android:id="@+id/btnChat"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@android:drawable/ic_dialog_email"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:tint="@android:color/white"
+                android:contentDescription="Messages"/>
+
+            <TextView
+                android:id="@+id/tvChatUnreadCount"
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:layout_gravity="top|end"
+                android:background="@drawable/bg_badge"
+                android:gravity="center"
+                android:textColor="@android:color/white"
+                android:textSize="10sp"
+                android:textStyle="bold"
+                android:visibility="gone"/>
+
+        </FrameLayout>
+
+        <FrameLayout
+            android:layout_width="40dp"
+            android:layout_height="40dp">
+
+            <ImageButton
+                android:id="@+id/btnNotifications"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:src="@drawable/ic_notification_badge"
+                android:contentDescription="Notifications"/>
+
+            <TextView
+                android:id="@+id/tvUnreadCount"
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:layout_gravity="top|end"
+                android:background="@drawable/bg_badge"
+                android:gravity="center"
+                android:textColor="@android:color/white"
+                android:textSize="10sp"
+                android:textStyle="bold"
+                android:visibility="gone"/>
+        </FrameLayout>
 
     </LinearLayout>
 

@@ -35,11 +35,11 @@
         android:layout_marginTop="8dp">
 
         <Button
-            android:id="@+id/btnViewCV"
+            android:id="@+id/btnViewProfile"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="View CV"
+            android:text="view_profile"
             android:layout_marginEnd="4dp"/>
 
         <Button

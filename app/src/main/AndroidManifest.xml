@@ -35,17 +35,16 @@
         <activity android:name=".PostJobActivity"           android:exported="false" />
         <activity android:name=".ApplicantsActivity"        android:exported="false" />
         <activity android:name=".ProfileActivity"           android:exported="false" />
-        <activity android:name=".UploadCVActivity"          android:exported="false" />
-        <activity android:name=".ui.chat.ChatActivity" android:exported="false" />
+        <activity android:name=".ui.chat.ChatActivity"      android:exported="false" />
         <activity android:name=".AdminDashboardActivity"    android:exported="false" />
         <activity android:name=".EmployerDashboardActivity" android:exported="false" />
         <activity android:name=".EmployerJobsActivity"      android:exported="false" />
         <activity android:name=".NotificationActivity"      android:exported="false" />
         <activity android:name=".SeekersActivity"           android:exported="false" />
         <activity android:name=".MyApplicationsActivity"    android:exported="false" />
-        <activity android:name=".ForgotPasswordActivity"     android:exported="false" />
-        <activity android:name=".SeekerProfileActivity"      android:exported="false" />
+        <activity android:name=".ForgotPasswordActivity"    android:exported="false" />
         <activity android:name=".OTPVerificationActivity"   android:exported="false" />
+        <activity android:name=".ChatListActivity"          android:exported="false" />
 
         <provider
             android:name="androidx.core.content.FileProvider"

@@ -232,7 +232,7 @@ def get_employers(request):
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def get_seekers(request):
-    seekers = User.objects.filter(role='seeker').values(
+    seekers = User.objects.filter(role='seeker', is_superuser=False).values(
         'id', 'username', 'email', 'phone', 'is_active'
     )
     return Response(list(seekers))
