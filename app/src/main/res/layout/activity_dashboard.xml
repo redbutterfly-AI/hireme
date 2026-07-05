@@ -13,6 +13,30 @@
         android:gravity="center_vertical"
         android:paddingHorizontal="16dp">
 
+        <FrameLayout
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_marginEnd="10dp">
+
+            <ImageView
+                android:id="@+id/imgSeekerProfile"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                android:visibility="gone"/>
+
+            <TextView
+                android:id="@+id/tvSeekerInitials"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/bg_circle"
+                android:gravity="center"
+                android:textColor="@android:color/white"
+                android:textSize="14sp"
+                android:textStyle="bold"/>
+
+        </FrameLayout>
+
         <TextView
             android:id="@+id/tvAppTitle"
             android:layout_width="0dp"

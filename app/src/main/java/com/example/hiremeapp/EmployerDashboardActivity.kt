@@ -92,6 +92,22 @@ class EmployerDashboardActivity : AppCompatActivity() {
                     if (response.isSuccessful) {
                         val profile = response.body() ?: return
                         findViewById<TextView>(R.id.tvEmployerName).text = profile.username
+
+                        val imgProfile = findViewById<android.widget.ImageView>(R.id.imgEmployerProfile)
+                        val tvInitials = findViewById<TextView>(R.id.tvEmployerInitials)
+
+                        if (!profile.profile_picture_url.isNullOrEmpty()) {
+                            com.bumptech.glide.Glide.with(this@EmployerDashboardActivity)
+                                .load(profile.profile_picture_url)
+                                .circleCrop()
+                                .into(imgProfile)
+                            imgProfile.visibility = android.view.View.VISIBLE
+                            tvInitials.visibility = android.view.View.GONE
+                        } else {
+                            tvInitials.text = profile.username?.firstOrNull()?.uppercase() ?: "?"
+                            tvInitials.visibility = android.view.View.VISIBLE
+                            imgProfile.visibility = android.view.View.GONE
+                        }
                     }
                 }
                 override fun onFailure(call: Call<UserProfile>, t: Throwable) {}

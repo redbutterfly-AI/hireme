@@ -7,6 +7,7 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.example.hiremeapp.models.UserProfile
 import com.example.hiremeapp.network.RetrofitClient
 import com.example.hiremeapp.ui.chat.ChatListFragment
 import retrofit2.Call
@@ -48,6 +49,7 @@ class DashboardActivity : AppCompatActivity() {
         if (token.isNotEmpty()) {
             fetchUnreadCount(token)
             fetchUnreadMessagesCount(token)
+            loadSeekerProfile(token)
         }
 
         loadFragment(HomeFragment())
@@ -73,6 +75,7 @@ class DashboardActivity : AppCompatActivity() {
         if (token.isNotEmpty()) {
             fetchUnreadCount(token)
             fetchUnreadMessagesCount(token)
+            loadSeekerProfile(token)
         }
     }
 
@@ -126,6 +129,33 @@ class DashboardActivity : AppCompatActivity() {
                     }
                 }
                 override fun onFailure(call: Call<Map<String, Int>>, t: Throwable) {}
+            })
+    }
+
+    private fun loadSeekerProfile(token: String) {
+        RetrofitClient.instance.getProfile("Bearer $token")
+            .enqueue(object : Callback<UserProfile> {
+                override fun onResponse(call: Call<UserProfile>, response: Response<UserProfile>) {
+                    if (response.isSuccessful) {
+                        val profile = response.body() ?: return
+                        val imgProfile = findViewById<android.widget.ImageView>(R.id.imgSeekerProfile)
+                        val tvInitials = findViewById<TextView>(R.id.tvSeekerInitials)
+
+                        if (!profile.profile_picture_url.isNullOrEmpty()) {
+                            com.bumptech.glide.Glide.with(this@DashboardActivity)
+                                .load(profile.profile_picture_url)
+                                .circleCrop()
+                                .into(imgProfile)
+                            imgProfile.visibility = android.view.View.VISIBLE
+                            tvInitials.visibility = android.view.View.GONE
+                        } else {
+                            tvInitials.text = profile.username?.firstOrNull()?.uppercase() ?: "?"
+                            tvInitials.visibility = android.view.View.VISIBLE
+                            imgProfile.visibility = android.view.View.GONE
+                        }
+                    }
+                }
+                override fun onFailure(call: Call<UserProfile>, t: Throwable) {}
             })
     }
 
