@@ -12,28 +12,28 @@ class RegisterView(APIView):
         email = request.data.get("email")
         password = request.data.get("password")
 
-        # Check empty fields
+        
         if not username or not email or not password:
             return Response(
                 {"error": "All fields are required"},
                 status=status.HTTP_400_BAD_REQUEST
             )
 
-        # Check existing username
+    
         if User.objects.filter(username=username).exists():
             return Response(
                 {"error": "Username already exists"},
                 status=status.HTTP_400_BAD_REQUEST
             )
 
-        # Check existing email
+    
         if User.objects.filter(email=email).exists():
             return Response(
                 {"error": "Email already exists"},
                 status=status.HTTP_400_BAD_REQUEST
             )
 
-        # Create user
+    
         user = User.objects.create_user(
             username=username,
             email=email,
