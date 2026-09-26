@@ -33,7 +33,6 @@ class MarkReadView(generics.UpdateAPIView):
             return Response({'error': 'Notification not found.'}, status=404)
 
 
-# These should be OUTSIDE the class
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def mark_all_read(request):
