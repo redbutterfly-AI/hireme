@@ -23,7 +23,7 @@ class ApplyJobView(generics.CreateAPIView):
 
         serializer.save(applicant=self.request.user)
 
-        # Notify employer
+    
         Notification.objects.create(
             user=job.employer,
             title="New Application",
@@ -78,7 +78,7 @@ def update_application_status(request, pk):
     application.status = new_status
     application.save()
 
-    # Notify job seeker
+
     Notification.objects.create(
         user=application.applicant,
         title=f"Application {new_status.capitalize()}",
