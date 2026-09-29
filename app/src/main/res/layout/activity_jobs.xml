@@ -5,7 +5,6 @@
     android:orientation="vertical"
     android:background="#F0F4F8">
 
-    <!-- Header -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -22,7 +21,6 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="12dp"/>
 
-        <!-- Search Bar -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="48dp"
@@ -54,7 +52,6 @@
 
     </LinearLayout>
 
-    <!-- Location Filter Chips -->
     <HorizontalScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -108,7 +105,6 @@
         </LinearLayout>
     </HorizontalScrollView>
 
-    <!-- Sort and Count Row -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -133,7 +129,6 @@
 
     </LinearLayout>
 
-    <!-- Jobs List -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerJobs"
         android:layout_width="match_parent"
