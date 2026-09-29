@@ -45,7 +45,6 @@ class NotificationActivity : AppCompatActivity() {
                         } else {
                             tvEmpty.visibility = View.GONE
                             recycler.visibility = View.VISIBLE
-                            // Show them as unread first, then mark read once displayed
                             recycler.adapter = NotificationAdapter(notifications)
                             markAllAsRead(token)
                         }
@@ -65,8 +64,6 @@ class NotificationActivity : AppCompatActivity() {
         RetrofitClient.instance.markAllNotificationsRead("Bearer $token")
             .enqueue(object : Callback<Map<String, String>> {
                 override fun onResponse(call: Call<Map<String, String>>, response: Response<Map<String, String>>) {
-                    // Server state updated; badge will reflect this next time
-                    // the dashboard fetches unread-count (onResume already does this).
                 }
                 override fun onFailure(call: Call<Map<String, String>>, t: Throwable) {}
             })
