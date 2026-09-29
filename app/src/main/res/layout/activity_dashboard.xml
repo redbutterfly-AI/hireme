@@ -47,7 +47,6 @@
             android:textStyle="bold"
             android:textColor="@android:color/white"/>
 
-        <!-- Notification Button with Badge -->
         <FrameLayout
             android:layout_width="40dp"
             android:layout_height="40dp">
