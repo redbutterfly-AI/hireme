@@ -162,13 +162,11 @@ class ProfileActivity : AppCompatActivity() {
                             putString("user_id", profile.id.toString())
                         }
                     } else {
-                        // If viewing someone else, hide logout/edit buttons
                         btnLogout.visibility = View.GONE
                         btnUploadPhoto.visibility = View.GONE
                         btnEditBio.visibility = View.GONE
                         btnAddPortfolio.visibility = View.GONE
 
-                        // Show Rate button if viewer is employer and target is seeker
                         val myRole = prefs.getString("role", "")
                         if (myRole == "employer" && profile.role == "seeker") {
                             btnRateUser.visibility = View.VISIBLE
@@ -262,13 +260,7 @@ class ProfileActivity : AppCompatActivity() {
     }
 
     private fun updateBio(newBio: String) {
-        // We can reuse the uploadProfilePicture pattern or a dedicated update profile call if available
-        // For now, let's assume we need to add a bio update to ApiService or use a generic profile update
-        // I'll add a simple @PATCH to ApiService for this.
         Toast.makeText(this, "Updating bio...", Toast.LENGTH_SHORT).show()
-        
-        // Let's assume startConversation endpoint or similar exists, but actually we need updateProfile.
-        // I will use a Map with "bio" key to a new endpoint I'll add to ApiService.
         RetrofitClient.instance.updateProfile("Bearer $currentToken", mapOf("bio" to newBio))
             .enqueue(object : Callback<UserProfile> {
                 override fun onResponse(call: Call<UserProfile>, response: Response<UserProfile>) {
