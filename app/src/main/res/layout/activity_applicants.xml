@@ -5,7 +5,6 @@
     android:orientation="vertical"
     android:background="#F5F5F5">
 
-    <!-- Header -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -31,7 +30,6 @@
 
     </LinearLayout>
 
-    <!-- Count -->
     <TextView
         android:id="@+id/tvApplicantCount"
         android:layout_width="match_parent"
@@ -44,7 +42,6 @@
         android:paddingBottom="8dp"
         android:background="@android:color/white"/>
 
-    <!-- Applicants List -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerApplicants"
         android:layout_width="match_parent"
