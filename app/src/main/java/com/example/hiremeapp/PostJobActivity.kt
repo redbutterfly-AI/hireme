@@ -25,7 +25,7 @@ class PostJobActivity : AppCompatActivity() {
         val etDuration    = findViewById<EditText>(R.id.etJobDuration)
         val btnPostJob    = findViewById<Button>(R.id.btnPostJob)
 
-        // Get saved JWT token
+    
         val token = getSharedPreferences("hireme", MODE_PRIVATE)
             .getString("token", "") ?: ""
 
@@ -37,7 +37,7 @@ class PostJobActivity : AppCompatActivity() {
             val pay         = etPay.text.toString().trim()
             val duration    = etDuration.text.toString().trim()
 
-            // Validate all fields
+        
             if (title.isEmpty()) {
                 etTitle.error = "Job title is required"
                 etTitle.requestFocus()
@@ -69,7 +69,7 @@ class PostJobActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            // Disable button while submitting
+           
             btnPostJob.isEnabled = false
             btnPostJob.text = "Posting..."
 
@@ -97,7 +97,6 @@ class PostJobActivity : AppCompatActivity() {
                                 "Job posted! Waiting for admin approval.",
                                 Toast.LENGTH_LONG
                             ).show()
-                            // Clear all fields after success
                             etTitle.text.clear()
                             etDescription.text.clear()
                             etLocation.text.clear()
