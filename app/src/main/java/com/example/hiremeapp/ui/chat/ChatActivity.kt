@@ -76,7 +76,6 @@ class ChatActivity : AppCompatActivity() {
         val prefs = getSharedPreferences("hireme", MODE_PRIVATE)
         myUsername = prefs.getString("username", "") ?: ""
         
-        // userId might be stored as String or Int depending on which version of LoginActivity was used
         myUserId = try {
             prefs.getInt("user_id", 0)
         } catch (e: Exception) {
@@ -205,8 +204,7 @@ class ChatActivity : AppCompatActivity() {
 
                 runOnUiThread {
                     if (msg.sender == myUserId) {
-                        // This is the server confirming a message we already added locally.
-                        // Replace the temporary placeholder instead of adding a duplicate.
+
                         val tempIndex = messages.indexOfLast {
                             it.id == -1 && it.sender == myUserId && it.content == msg.content
                         }
