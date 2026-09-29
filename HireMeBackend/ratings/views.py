@@ -39,8 +39,7 @@ def rate_seeker(request):
         except Job.DoesNotExist:
             return Response({'error': 'Job not found.'}, status=404)
 
-    # If job is provided, we check for a rating linked to that job.
-    # If no job is provided, we check for a rating without a job link.
+    
     existing = Rating.objects.filter(job=job, rater=request.user, rated_user=seeker).first()
 
     if existing:
