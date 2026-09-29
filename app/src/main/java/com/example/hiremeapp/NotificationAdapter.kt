@@ -30,7 +30,7 @@ class NotificationAdapter(
         holder.tvDate.text = notif.created_at ?: ""
 
         if (!notif.is_read) {
-            holder.itemView.setBackgroundColor(0xFFE3F2FD.toInt()) // Light blue
+            holder.itemView.setBackgroundColor(0xFFE3F2FD.toInt())
         }
     }
 
