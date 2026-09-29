@@ -68,7 +68,6 @@ class LoginActivity : AppCompatActivity() {
                             val uname  = body["username"] ?: username
                             val userId = body["user_id"] ?: "0"
 
-                            // Save EVERYTHING consistently
                             getSharedPreferences("hireme", MODE_PRIVATE)
                                 .edit()
                                 .putString("token", token)
