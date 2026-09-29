@@ -80,7 +80,6 @@
             android:layout_marginBottom="24dp"
             android:visibility="gone"/>
 
-        <!-- Profile Details Card -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -223,7 +222,6 @@
 
         </LinearLayout>
 
-        <!-- Skills & Bio Section (seeker only) -->
         <LinearLayout
             android:id="@+id/cardSkills"
             android:layout_width="match_parent"
