@@ -133,7 +133,7 @@ class JobsActivity : AppCompatActivity() {
         intent.putExtra("job_pay",         job.pay)
         intent.putExtra("job_duration",    job.duration)
         intent.putExtra("employer_name",   job.employer_name)
-        intent.putExtra("employer_id",     job.employer)  // KEY FIX
+        intent.putExtra("employer_id",     job.employer)
         intent.putExtra("user_role",       userRole)
         startActivity(intent)
     }
